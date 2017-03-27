@@ -17,10 +17,8 @@
   },
   "homepage": "https://github.com/rebelstackio/rebelchat-script#readme",
   "scripts": {
-    "build": "node_modules\\.bin\\webpack --watch --colors",
-    "build-win": "webpack --watch --colors",
-    "start": "node_modules/.bin/webpack-dev-server --progress --colors",
-    "start-win": "node_modules\\.bin\\webpack-dev-server --progress --colors"
+    "build": "node_modules/.bin/webpack --watch --colors",
+    "start": "node_modules/.bin/webpack-dev-server --progress --colors"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

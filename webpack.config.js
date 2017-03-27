@@ -31,7 +31,11 @@ module.exports={
 				exclude: /node_modules/,
 				loader:'babel-loader',
 				query:babelSettings
-			}
+			},
+			{
+        test: /(\.html|\.css)$/,
+        use: 'raw-loader'
+      }
 		]
 	},
 	plugins:[
