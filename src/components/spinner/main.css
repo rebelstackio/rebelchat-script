@@ -1,25 +1,31 @@
+
 /**** SPINNER ****/
-.wrap {
+:host {
+
+}
+
+.rebelchat-wrap {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
 
-.text {
-	color: white;
+.rebelchat-text {
+	color: red;
 	display: inline-block;
-	margin-left: 5px;
+	margin: 0 10px 0 10px;
+	font-family: 'Roboto-Thin'
 }
 
-.bounceball {
+.rebelchat-bounceball {
 	position: relative;
 	display: inline-block;
 	height: 37px;
 	width: 15px;
 }
 
-.bounceball:before {
+.rebelchat-bounceball:before {
 	position: absolute;
 	content: '';
 	display: block;
@@ -27,12 +33,12 @@
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;
-	background-color: white;
+	background-color: red;
 	transform-origin: 50%;
-	animation: bounce 500ms alternate infinite ease;
+	animation: rebelchat-bounce 500ms alternate infinite ease;
 }
 
-@keyframes bounce {
+@keyframes rebelchat-bounce {
 	0% {
 		top: 30px;
 		height: 5px;
