@@ -156,28 +156,27 @@ export default class RebelChat {
 		const form = document.getElementById(this.config['el']);
 
 		const chatDiv = document.createElement('div');
-		chatDiv.setAttribute('class', 'collapse in');
+		chatDiv.setAttribute('class', 'rebelchat-container');
 		chatDiv.setAttribute('id', Utils.createUniqueIdSelector('chat-container'));
-		// chatDiv.setAttribute('style', 'display:none;');
+
 
 		const chatHistoryDiv = document.createElement('div');
-		chatHistoryDiv.setAttribute('class', 'nano has-scrollbar');
+		chatHistoryDiv.setAttribute('class', 'rebelchat-nano has-scrollbar');
 		chatHistoryDiv.setAttribute('id', Utils.createUniqueIdSelector('chat-history'));
 
 		const chatHistoryContent = document.createElement('div');
-		chatHistoryContent.setAttribute('class', 'nano-content pad-all');
+		chatHistoryContent.setAttribute('class', 'rebelchat-nano-content rebelchat-pad-all');
 		chatHistoryContent.setAttribute('id', Utils.createUniqueIdSelector('chat-history-content'));
 		chatHistoryContent.setAttribute('tabindex', '0');
 
 		const chatUl = document.createElement('ul');
-		chatUl.setAttribute('class', 'list-unstyled media-block');
+		chatUl.setAttribute('class', 'rebelchat-list-unstyled rebelchat-media-block');
 		chatUl.setAttribute('id', Utils.createUniqueIdSelector('chat-list'));
 
 		const messageZone = this.buildMessageZone();
 
 		chatHistoryContent.appendChild(chatUl);
 		chatHistoryDiv.appendChild(chatHistoryContent);
-		// chatHistoryDiv.appendChild(nanoPane);
 		chatDiv.appendChild(chatHistoryDiv);
 		chatDiv.appendChild(messageZone);
 
@@ -237,7 +236,7 @@ export default class RebelChat {
 	buildServerMessage( message, createdAt, read, sending, id ) {
 		const chatList = document.getElementById(Utils.createUniqueIdSelector('chat-list'));
 		if ( this.isLastMessageFromServer() ) {
-			const messages = chatList.getElementsByClassName('mar-btm');
+			const messages = chatList.getElementsByClassName('rebelchat-mar-btm');
 			const  lastMessage = messages[messages.length - 1];
 			if ( id ) {
 				lastMessage.setAttribute('id', 'message-container-' + id);
@@ -247,12 +246,12 @@ export default class RebelChat {
 				lastMessage.setAttribute('createdAt', createdAt);
 			}
 
-			const speech = lastMessage.getElementsByClassName('speech')[0];
+			const speech = lastMessage.getElementsByClassName('rebelchat-speech')[0];
 
 			const time = Utils.buildDateMessageFormat(createdAt);
 
 			const textContainer = document.createElement('p');
-			textContainer.setAttribute('class', "msg-right");
+			textContainer.setAttribute('class', "rebelchat-msg-right");
 			textContainer.setAttribute('title', time);
 
 			const _message = document.createTextNode(message);
@@ -275,7 +274,7 @@ export default class RebelChat {
 			if ( !messageExists ) {
 				const messageContainer = document.createElement('li');
 				// messageContainer.setAttribute('style', 'display:none;');
-				messageContainer.setAttribute('class', 'mar-btm server-message');
+				messageContainer.setAttribute('class', 'rebelchat-mar-btm rebelchat-server-message');
 				if ( id ) {
 					messageContainer.setAttribute('id', 'message-container-' + id);
 				}
@@ -285,10 +284,10 @@ export default class RebelChat {
 				}
 
 				const avatarZone = document.createElement('div');
-				avatarZone.setAttribute('class', 'media-right');
+				avatarZone.setAttribute('class', 'rebelchat-media-right');
 
 				const avatar = document.createElement('img');
-				avatar.setAttribute('class', 'img-circle img-sm');
+				avatar.setAttribute('class', 'rebelchat-img-sm');
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
@@ -296,13 +295,13 @@ export default class RebelChat {
 				);
 
 				const messageTextContainer = document.createElement('div');
-				messageTextContainer.setAttribute('class', 'media-body pad-hor speech-right');
+				messageTextContainer.setAttribute('class', 'rebelchat-media-body rebelchat-pad-hor rebelchat-speech-right');
 
 				const speech = document.createElement('div');
-				speech.setAttribute('class', 'speech');
+				speech.setAttribute('class', 'rebelchat-speech');
 
 				const linkHeader = document.createElement('a');
-				linkHeader.setAttribute('class', "media-heading");
+				linkHeader.setAttribute('class', "rebelchat-media-heading");
 
 				const clientName = document.createElement('b');
 
@@ -314,7 +313,7 @@ export default class RebelChat {
 				const domTime = document.createTextNode(time);
 
 				const textContainer = document.createElement('p');
-				textContainer.setAttribute('class', "msg-right");
+				textContainer.setAttribute('class', "rebelchat-msg-right");
 				textContainer.setAttribute('title', time);
 
 				const _message = document.createTextNode(message);
@@ -382,7 +381,7 @@ export default class RebelChat {
 		if ( this.isLastMessageFromClient() ) {
 			const messages = chatList.getElementsByClassName('client-message');
 			const lastMessage = messages[messages.length - 1];
-			const speech = lastMessage.getElementsByClassName('speech')[0];
+			const speech = lastMessage.getElementsByClassName('rebelchat-speech')[0];
 
 			const time = Utils.buildDateMessageFormat(createdAt);
 
@@ -424,7 +423,8 @@ export default class RebelChat {
 			//LAST MESSAGE IS FROM THE SERVER
 			const messageContainer = document.createElement('li');
 			// messageContainer.setAttribute('style', 'display:none;');
-			messageContainer.setAttribute('class', 'mar-btm client-message');
+			//
+			messageContainer.setAttribute('class', 'rebelchat-mar-btm client-message');
 
 			if ( id ) {
 				messageContainer.setAttribute('id', 'message-container-' + id);
@@ -435,10 +435,10 @@ export default class RebelChat {
 			}
 
 			const avatarZone = document.createElement('div');
-			avatarZone.setAttribute('class', 'media-left');
+			avatarZone.setAttribute('class', 'rebelchat-media-left');
 
 			const avatar = document.createElement('img');
-			avatar.setAttribute('class', 'img-circle img-sm');
+			avatar.setAttribute('class', 'rebelchat-img-sm');
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
@@ -446,13 +446,13 @@ export default class RebelChat {
 			);
 
 			const messageTextContainer = document.createElement('div');
-			messageTextContainer.setAttribute('class', 'media-body pad-hor');
+			messageTextContainer.setAttribute('class', 'rebelchat-media-body rebelchat-pad-hor');
 
 			const speech = document.createElement('div');
-			speech.setAttribute('class', 'speech');
+			speech.setAttribute('class', 'rebelchat-speech');
 
 			const linkHeader = document.createElement('a');
-			linkHeader.setAttribute('class', "media-heading");
+			linkHeader.setAttribute('class', "rebelchat-media-heading");
 
 			const clientName = document.createElement('b');
 
@@ -530,19 +530,19 @@ export default class RebelChat {
 		col11.setAttribute('class', 'col-xs-11');
 
 		const group = document.createElement('div')
-		group.setAttribute('class', 'group');
+		group.setAttribute('class', 'rebelchat-group');
 
 		const message = document.createElement('input');
-		message.setAttribute('class', 'material');
+		message.setAttribute('class', 'rebelchat rebelchat-material');
 		message.setAttribute('type', 'text');
 		message.setAttribute('placeholder', this.config['chatInputPlaceholder']);
 		message.setAttribute('id', messageSelector);
 
 		const highlight = document.createElement('span');
-		highlight.setAttribute('class', 'highlight');
+		highlight.setAttribute('class', 'rebelchat-highlight');
 
 		const bar = document.createElement('span');
-		bar.setAttribute('class', 'bar');
+		bar.setAttribute('class', 'rebelchat-bar');
 
 		const col1 = document.createElement('div')
 		col1.setAttribute('class', 'col-xs-1');
@@ -553,7 +553,7 @@ export default class RebelChat {
 
 		const image = document.createElement('span');
 		image.setAttribute('style',"padding-top: 20px;" );
-		image.setAttribute('class',"chat-btn glyphicon glyphicon-send");
+		image.setAttribute('class',"rebelchat-btn glyphicon glyphicon-send");
 		image.setAttribute('aria-hidden',"true");
 		image.setAttribute('title',"Send");
 
@@ -610,7 +610,7 @@ export default class RebelChat {
 		//NAME INPUT
 		let input = document.createElement('input');
 		input.setAttribute('type', 'text');
-		input.setAttribute('class', 'form-control');
+		input.setAttribute('class', 'rebelchat rebelchat-form-control');
 		input.setAttribute('id', Utils.createUniqueIdSelector('rebel-name'));
 		input.setAttribute('name', 'name');
 		input.setAttribute('placeholder', 'Name');
@@ -619,7 +619,7 @@ export default class RebelChat {
 		//EMAIL
 		let email = document.createElement('input');
 		email.setAttribute('type', 'email');
-		email.setAttribute('class', 'form-control');
+		email.setAttribute('class', 'rebelchat rebelchat-form-control');
 		email.setAttribute('id', Utils.createUniqueIdSelector('rebel-email'));
 		email.setAttribute('name', 'email');
 		email.setAttribute('placeholder', 'Email');
@@ -627,7 +627,7 @@ export default class RebelChat {
 
 		//MESSAGE
 		let message = document.createElement('textarea');
-		message.setAttribute('class', 'form-control');
+		message.setAttribute('class', 'rebelchat rebelchat-form-control');
 		message.setAttribute('id', Utils.createUniqueIdSelector('rebel-message'));
 		message.setAttribute('name', 'message');
 		message.setAttribute('placeholder', 'Message');
@@ -636,7 +636,7 @@ export default class RebelChat {
 
 		// BUTTON
 		let button = document.createElement('button');
-		button.setAttribute('class', 'btn btn-main btn-lg');
+		button.setAttribute('class', 'rebelchat rebelchat-btn rebelchat-btn-main rebelchat-btn-lg');
 		button.setAttribute('type', 'submit');
 		button.setAttribute('id', Utils.createUniqueIdSelector('rebel-send'));
 
@@ -660,9 +660,9 @@ export default class RebelChat {
 		// $( "#contact-form" ).fadeIn( "slow" );
 		// HTML ->
 		// <form class="contact-form" role="form" action="https://secure.mailjol.net/allforms/u/a5b1c394.php">
-		// 	<input type="text" class="form-control" id="Name" name="Name" placeholder="Name" required>
-		// 	<input type="email" class="form-control" id="Email" name="Email" placeholder="Email" required>
-		// 	<textarea id="Message" name="Message" placeholder="Message" class="form-control" rows="10"></textarea>
+		// 	<input type="text" class="rebelchat-form-control" id="Name" name="Name" placeholder="Name" required>
+		// 	<input type="email" class="rebelchat-form-control" id="Email" name="Email" placeholder="Email" required>
+		// 	<textarea id="Message" name="Message" placeholder="Message" class="rebelchat-form-control" rows="10"></textarea>
 		// 	<button class="btn btn-main btn-lg" type="submit" id="send" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Sending..."><i class="fa fa-paper-plane "></i> Send</button>
 		// </form>
 		// <div id="result-message" role="alert"></div>
@@ -737,15 +737,15 @@ export default class RebelChat {
 		}
 
 		const li = document.createElement('li');
-		li.setAttribute('class', 'mar-btm date-entry');
+		li.setAttribute('class', 'rebelchat-mar-btm date-entry');
 		li.setAttribute('id', Utils.createUniqueIdSelector('date-entry-' + timestamp));
 		li.setAttribute('date', timestamp);
 
 		const div = document.createElement('div');
-		div.setAttribute('class', 'hr');
+		div.setAttribute('class', 'rebelchat-hr');
 
 		const span = document.createElement('span');
-		span.setAttribute('class', 'hr-title');
+		span.setAttribute('class', 'rebelchat-hr-title');
 
 		const textNode = document.createTextNode(text);
 
@@ -778,7 +778,7 @@ export default class RebelChat {
 				this.buildDateEntry();
 				//CHANGE LAST DATE ENTRY
 				const text	= shortDate(dateEntry);
-				const span = entry.getElementsByClassName('hr-title')[0];
+				const span = entry.getElementsByClassName('rebelchat-hr-title')[0];
 				span.innerHTML = text;
 			}
 		}
