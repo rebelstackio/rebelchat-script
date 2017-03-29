@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/rebelstackio/rebelchat-script#readme",
   "scripts": {
-    "build": "node_modules/.bin/webpack --watch --colors",
-    "start": "node_modules/.bin/webpack-dev-server --progress --colors"
+    "build": "NODE_ENV=production node_modules/.bin/webpack --watch --colors",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --progress --colors"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -30,7 +30,8 @@
     "html-webpack-plugin": "^2.28.0",
     "raw-loader": "^0.5.1",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.1",
+    "webpack-uglify-js-plugin": "^1.1.9"
   },
   "dependencies": {
     "firebase": "^3.7.3"

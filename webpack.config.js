@@ -2,12 +2,13 @@ var webpack = require('webpack'),
 path = require('path'),
 HtmlWebpackPlugin = require('html-webpack-plugin'),
 CopyWebpackPlugin = require('copy-webpack-plugin')
+WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 fs = require('fs');
 
 /* babel */
 const babelSettings = JSON.parse(fs.readFileSync(".babelrc"));
 
-module.exports={
+const config = {
 	entry:{
 		app:'./src/index.js'
 	},
@@ -51,3 +52,23 @@ module.exports={
 	],
 	devtool: "source-map"
 };
+
+if (process.env.NODE_ENV === 'production') {
+	config.plugins.push(
+		new WebpackUglifyJsPlugin({
+			cacheFolder: path.resolve(__dirname, 'build'),
+			debug: true,
+			minimize: true,
+			sourceMap: false,
+			output: {
+				comments: false
+			},
+			compressor: {
+				warnings: false
+			}
+		})
+	)
+}
+
+
+module.exports = config;
