@@ -76,10 +76,7 @@ export default class Utils {
 		} else {
 			date = new Date();
 		}
-
-		var strDate = date.toLocaleTimeString("en-us");
-		var time = document.createTextNode(strDate);
-		return time;
+		return date.toLocaleTimeString("en-us");
 	}
 
 

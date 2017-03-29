@@ -17,35 +17,6 @@ const SEND_MESSAGE_KEY = 13;
 
 const DEFAULT_DATE_ENTRY = 'Today';
 
-
-function scrollTo(element, to, duration) {
-    var start = element.scrollTop,
-        change = to - start,
-        currentTime = 0,
-        increment = 20;
-
-    var animateScroll = function(){
-        currentTime += increment;
-        var val = Math.easeInOutQuad(currentTime, start, change, duration);
-        element.scrollTop = val;
-        if(currentTime < duration) {
-            setTimeout(animateScroll, increment);
-        }
-    };
-    animateScroll();
-}
-
-//t = current time
-//b = start value
-//c = change in value
-//d = duration
-Math.easeInOutQuad = function (t, b, c, d) {
-  t /= d/2;
-	if (t < 1) return c/2*t*t + b;
-	t--;
-	return -c/2 * (t*(t-2) - 1) + b;
-};
-
 export default class RebelChat {
 
 	constructor( config ){
@@ -282,15 +253,16 @@ export default class RebelChat {
 
 			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-right");
+			textContainer.setAttribute('title', time);
 
 			const _message = document.createTextNode(message);
 
-			const span = document.createElement('span');
-			span.setAttribute('style', 'float:right');
-			span.appendChild(time);
+			// const span = document.createElement('span');
+			// span.setAttribute('style', 'float:right');
+			// span.appendChild(domTime);
 
 			textContainer.appendChild(_message);
-			textContainer.appendChild(span);
+			// textContainer.appendChild(span);
 			speech.appendChild(textContainer);
 
 			//FOCUS LAST MESSAGE
@@ -339,21 +311,23 @@ export default class RebelChat {
 				);
 
 				const time = Utils.buildDateMessageFormat(createdAt);
+				const domTime = document.createTextNode(time);
 
 				const textContainer = document.createElement('p');
 				textContainer.setAttribute('class', "msg-right");
+				textContainer.setAttribute('title', time);
 
 				const _message = document.createTextNode(message);
 
 				const span = document.createElement('span');
 				span.setAttribute('style', 'float:right');
-				span.appendChild(time);
+				span.appendChild(domTime);
 
 				textContainer.appendChild(_message);
-				textContainer.appendChild(span);
 
 				clientName.appendChild(name);
 				linkHeader.appendChild(clientName);
+				linkHeader.appendChild(span);
 
 				speech.appendChild(linkHeader);
 				speech.appendChild(textContainer);
@@ -422,6 +396,7 @@ export default class RebelChat {
 
 			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-left");
+			textContainer.setAttribute('title', time);
 
 			//ADD STYLE WHEN
 			if ( sending ) {
@@ -433,12 +408,12 @@ export default class RebelChat {
 
 			const _message = document.createTextNode(message);
 
-			const span = document.createElement('span');
-			span.setAttribute('style', 'float:right');
-			span.appendChild(time);
+			// const span = document.createElement('span');
+			// span.setAttribute('style', 'float:right');
+			// span.appendChild(time);
 
 			textContainer.appendChild(_message);
-			textContainer.appendChild(span);
+			// textContainer.appendChild(span);
 			speech.appendChild(textContainer);
 
 			//FOCUS LAST MESSAGE
@@ -486,6 +461,7 @@ export default class RebelChat {
 			);
 
 			const time = Utils.buildDateMessageFormat(createdAt);
+			const domTime = document.createTextNode(time);
 
 			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-left");
@@ -494,13 +470,14 @@ export default class RebelChat {
 
 			const span = document.createElement('span');
 			span.setAttribute('style', 'float:right');
-			span.appendChild(time);
+			span.appendChild(domTime);
 
 			textContainer.appendChild(_message);
-			textContainer.appendChild(span);
+			textContainer.setAttribute('title', time);
 
 			clientName.appendChild(name);
 			linkHeader.appendChild(clientName);
+			linkHeader.appendChild(span);
 
 			speech.appendChild(linkHeader);
 			speech.appendChild(textContainer);

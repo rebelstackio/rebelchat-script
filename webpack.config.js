@@ -13,7 +13,7 @@ module.exports={
 	},
 	output:{
 		path:path.resolve(__dirname,'build'),
-		filename:'bundle.js'
+		filename:'rebelchat.js'
 	},
 	resolve:{
 		extensions:['.js']
@@ -33,9 +33,9 @@ module.exports={
 				query:babelSettings
 			},
 			{
-        test: /(\.html|\.css)$/,
-        use: 'raw-loader'
-      }
+				test: /(\.html|\.css)$/,
+				use: 'raw-loader'
+			}
 		]
 	},
 	plugins:[
