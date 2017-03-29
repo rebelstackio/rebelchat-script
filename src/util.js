@@ -1,17 +1,28 @@
-let UNIQUE_ID;
+let REBELCHAT_UNIQUE_ID;
 
 export default class Utils {
 
+	/**
+	 * static - generate a unique ID for all the dom elements ID
+	 *
+	 * @return {string}  unique ID
+	 */
 	static generateUniqueId() {
-		UNIQUE_ID = (+ new Date());
-		return UNIQUE_ID;
+		REBELCHAT_UNIQUE_ID = (+ new Date());
+		return REBELCHAT_UNIQUE_ID;
 	}
 
+	/**
+	 * static - Create a selector base on the unique ID
+	 *
+	 * @param  {string} selector DOM selector
+	 * @return {string}          selector
+	 */
 	static createUniqueIdSelector( selector ) {
-		if ( UNIQUE_ID ) {
-			return UNIQUE_ID + '-' + selector;
+		if ( REBELCHAT_UNIQUE_ID ) {
+			return REBELCHAT_UNIQUE_ID + '-' + selector;
 		} else {
-			throw new Error('UNIQUE_ID is not defined');
+			throw new Error('REBELCHAT_UNIQUE_ID is not defined');
 		}
 	}
 
@@ -33,7 +44,9 @@ export default class Utils {
  * @param  {Date} 	date Date
  * @return {String}      Short format
  */
+
 	static shortDate(date) {
+		let text;
 		const options = {
 			month: "short",
 			day: "numeric"
@@ -49,6 +62,13 @@ export default class Utils {
 	}
 
 
+
+	/**
+	 * static - Create date format string
+	 *
+	 * @param  {timestap} createdAt timestamp
+	 * @return {string}           	string Date format
+	 */
 	static buildDateMessageFormat(createdAt) {
 		let date;
 		if ( createdAt ) {
@@ -63,6 +83,12 @@ export default class Utils {
 	}
 
 
+	/**
+	 * static - Check if the date variable is today
+	 *
+	 * @param  {Date} date Check date
+	 * @return {boolean}
+	 */
 	static isToday( date ) {
 		const pDate = new Date();
 		return (

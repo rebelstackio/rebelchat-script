@@ -15,6 +15,10 @@ let REBELCHAT_KEY = null;
 
 export default class FirebaseInstance {
 
+
+	/**
+	 * static - set up all the firebase config for the chat
+	 */
 	static init() {
 
 		if ( localStorage && localStorage[REBELCHAT_CLIENT_KEY_NAME]) {
@@ -23,10 +27,8 @@ export default class FirebaseInstance {
 		}
 
 		if ( !REBELCHAT_KEY ) {
-
 			REBELCHAT_KEY = database.ref().child('clients').push().key;
-
-			if ( localStorage ){
+			if ( localStorage ) {
 				localStorage.setItem(
 					REBELCHAT_CLIENT_KEY_NAME,
 					REBELCHAT_KEY
@@ -35,14 +37,6 @@ export default class FirebaseInstance {
 			} else {
 				throw new Error('Your browser doesn\'t support local storage');
 			}
-			// var newClient = {
-			// 	messages: {},
-			// 	visitDate : firebase.database.ServerValue.TIMESTAMP
-			// };
-			//
-			// var updates = {};
-			// updates['/clients/' + firebaseHelper.REBEL_KEY] = newClient;
-			// return firebase.database().ref().update(updates);
 		}
 	}
 
@@ -54,8 +48,6 @@ export default class FirebaseInstance {
 	 * @return {type}      description
 	 */
 	static saveClientInfo( user ) {
-		// REBELCHAT_KEY = firebase.database().ref().child('clients').push().key;
-
 		let updates = {};
 
 		let newClient = {
@@ -103,7 +95,7 @@ export default class FirebaseInstance {
 
 
 	/**
-	 * _newServeMessage - new message from server
+	 * newServeMessage - new message from server
 	 *
 	 * @param  {function} next Callback
 	 */
@@ -117,10 +109,9 @@ export default class FirebaseInstance {
 
 
 	/**
-	 * static - description
+	 * getMessages - Get the last messages on the current conversation
 	 *
-	 * @param  {type} next description
-	 * @return {type}      description
+	 * @param  {function} next description
 	 */
 	static getMessages( next ) {
 		var path = '/messages/' + REBELCHAT_KEY  +'/';

@@ -4,24 +4,76 @@ import css from './assets/css/style.css';
 
 
 const CONFIG = {
-	el: 'main',
+	el: 'rebelchat',
 	contactLabel: 'Send Message',
-	chatInputPlaceholder: 'Enter your message'
+	chatInputPlaceholder: 'Enter your message',
+	serverContactLabel: 'RebelStack\'s Team',
+	clientContactLabel: 'You',
 };
 
 const TRUNCATED_LENGTH = 40;
+
 const SEND_MESSAGE_KEY = 13;
+
 const DEFAULT_DATE_ENTRY = 'Today';
-const LAST_MESSAGE_FROM_CLIENT = true;
+
+
+function scrollTo(element, to, duration) {
+    var start = element.scrollTop,
+        change = to - start,
+        currentTime = 0,
+        increment = 20;
+
+    var animateScroll = function(){
+        currentTime += increment;
+        var val = Math.easeInOutQuad(currentTime, start, change, duration);
+        element.scrollTop = val;
+        if(currentTime < duration) {
+            setTimeout(animateScroll, increment);
+        }
+    };
+    animateScroll();
+}
+
+//t = current time
+//b = start value
+//c = change in value
+//d = duration
+Math.easeInOutQuad = function (t, b, c, d) {
+  t /= d/2;
+	if (t < 1) return c/2*t*t + b;
+	t--;
+	return -c/2 * (t*(t-2) - 1) + b;
+};
 
 export default class RebelChat {
 
 	constructor( config ){
+		const _config = this.validateConfig(config);
 		this.id = Utils.generateUniqueId();
-		this.config = Object.assign(CONFIG, config);
+		this.config = Object.assign(CONFIG, _config);
 		this.loadStyles();
 		FirebaseInstance.init();
+		this.newDateEntryFlag = false;
 		this.init();
+	}
+
+
+	/**
+	 * validateConfig - Validate config object
+	 *
+	 * @param  {object} config Config object
+	 * @return {object}        Validated config object
+	 */
+	validateConfig( config ) {
+		if ( config['el'] ) {
+			if ( config['el'][0] === '#') {
+				config['el'] = config['el'].slice(1);
+			} else {
+				throw new Error('The \'el\' property should be a ID selector')
+			}
+		}
+		return config;
 	}
 
 	/**
@@ -89,10 +141,16 @@ export default class RebelChat {
 				lastDate = new Date(message['createdAt']);
 			} else {
 				let tmpDate = new Date(message['createdAt']);
-				//CALCULATE DAYS OF DIFFERENCE
+				//CALCULATE DAYS AGO
 				let daysDiff = Utils.diffDates(tmpDate, lastDate);
 				if ( daysDiff > 0 ) {
+					//NEW MESSAGE DATE
 					this.buildDateEntry(message['createdAt']);
+					//THE NEW MESSAGE REQUIRES A NEW BOX CONTAINER
+					this.newDateEntryFlag = true;
+				} else {
+					//THE NEW MESSAGE CAN USE THE LAST BOX CONTAINER
+					this.newDateEntryFlag = false;
 				}
 				lastDate = tmpDate;
 			}
@@ -137,6 +195,7 @@ export default class RebelChat {
 
 		const chatHistoryContent = document.createElement('div');
 		chatHistoryContent.setAttribute('class', 'nano-content pad-all');
+		chatHistoryContent.setAttribute('id', Utils.createUniqueIdSelector('chat-history-content'));
 		chatHistoryContent.setAttribute('tabindex', '0');
 
 		const chatUl = document.createElement('ul');
@@ -217,16 +276,16 @@ export default class RebelChat {
 				lastMessage.setAttribute('createdAt', createdAt);
 			}
 
-			var speech = lastMessage.getElementsByClassName('speech')[0];
+			const speech = lastMessage.getElementsByClassName('speech')[0];
 
-			var time = Utils.buildDateMessageFormat(createdAt);
+			const time = Utils.buildDateMessageFormat(createdAt);
 
-			var textContainer = document.createElement('p');
+			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-right");
 
-			var _message = document.createTextNode(message);
+			const _message = document.createTextNode(message);
 
-			var span = document.createElement('span');
+			const span = document.createElement('span');
 			span.setAttribute('style', 'float:right');
 			span.appendChild(time);
 
@@ -242,8 +301,8 @@ export default class RebelChat {
 			const messageExists = document.getElementById('message-container-' + id);
 
 			if ( !messageExists ) {
-				var messageContainer = document.createElement('li');
-				messageContainer.setAttribute('style', 'display:none;');
+				const messageContainer = document.createElement('li');
+				// messageContainer.setAttribute('style', 'display:none;');
 				messageContainer.setAttribute('class', 'mar-btm server-message');
 				if ( id ) {
 					messageContainer.setAttribute('id', 'message-container-' + id);
@@ -253,10 +312,10 @@ export default class RebelChat {
 					messageContainer.setAttribute('createdAt', createdAt);
 				}
 
-				var avatarZone = document.createElement('div');
+				const avatarZone = document.createElement('div');
 				avatarZone.setAttribute('class', 'media-right');
 
-				var avatar = document.createElement('img');
+				const avatar = document.createElement('img');
 				avatar.setAttribute('class', 'img-circle img-sm');
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
@@ -264,27 +323,29 @@ export default class RebelChat {
 					'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man.svg?alt=media&token=f476c305-d215-4c2f-8e15-9196b48d55b3'
 				);
 
-				var messageTextContainer = document.createElement('div');
+				const messageTextContainer = document.createElement('div');
 				messageTextContainer.setAttribute('class', 'media-body pad-hor speech-right');
 
-				var speech = document.createElement('div');
+				const speech = document.createElement('div');
 				speech.setAttribute('class', 'speech');
 
-				var linkHeader = document.createElement('a');
+				const linkHeader = document.createElement('a');
 				linkHeader.setAttribute('class', "media-heading");
 
-				var clientName = document.createElement('b');
+				const clientName = document.createElement('b');
 
-				var name = document.createTextNode('RebelStack\'s Team');
+				const name = document.createTextNode(
+					this.config['serverContactLabel']
+				);
 
-				var time = Utils.buildDateMessageFormat(createdAt);
+				const time = Utils.buildDateMessageFormat(createdAt);
 
-				var textContainer = document.createElement('p');
+				const textContainer = document.createElement('p');
 				textContainer.setAttribute('class', "msg-right");
 
-				var _message = document.createTextNode(message);
+				const _message = document.createTextNode(message);
 
-				var span = document.createElement('span');
+				const span = document.createElement('span');
 				span.setAttribute('style', 'float:right');
 				span.appendChild(time);
 
@@ -345,11 +406,11 @@ export default class RebelChat {
 		const chatList = document.getElementById(Utils.createUniqueIdSelector('chat-list'));
 		//LAST MESSAGE IS FROM THE CLIENT
 		if ( this.isLastMessageFromClient() ) {
-			var messages = chatList.getElementsByClassName('mar-btm');
-			var lastMessage = messages[messages.length - 1];
-			var speech = lastMessage.getElementsByClassName('speech')[0];
+			const messages = chatList.getElementsByClassName('client-message');
+			const lastMessage = messages[messages.length - 1];
+			const speech = lastMessage.getElementsByClassName('speech')[0];
 
-			var time = Utils.buildDateMessageFormat(createdAt);
+			const time = Utils.buildDateMessageFormat(createdAt);
 
 			if ( id ) {
 				lastMessage.setAttribute('id', 'message-container-' + id);
@@ -359,7 +420,7 @@ export default class RebelChat {
 				lastMessage.setAttribute('createdAt', createdAt);
 			}
 
-			var textContainer = document.createElement('p');
+			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-left");
 
 			//ADD STYLE WHEN
@@ -370,9 +431,9 @@ export default class RebelChat {
 				// }, 2000);
 			}
 
-			var _message = document.createTextNode(message);
+			const _message = document.createTextNode(message);
 
-			var span = document.createElement('span');
+			const span = document.createElement('span');
 			span.setAttribute('style', 'float:right');
 			span.appendChild(time);
 
@@ -386,7 +447,7 @@ export default class RebelChat {
 			return lastMessage;
 		} else {
 			//LAST MESSAGE IS FROM THE SERVER
-			var messageContainer = document.createElement('li');
+			const messageContainer = document.createElement('li');
 			// messageContainer.setAttribute('style', 'display:none;');
 			messageContainer.setAttribute('class', 'mar-btm client-message');
 
@@ -398,10 +459,10 @@ export default class RebelChat {
 				messageContainer.setAttribute('createdAt', createdAt)
 			}
 
-			var avatarZone = document.createElement('div');
+			const avatarZone = document.createElement('div');
 			avatarZone.setAttribute('class', 'media-left');
 
-			var avatar = document.createElement('img');
+			const avatar = document.createElement('img');
 			avatar.setAttribute('class', 'img-circle img-sm');
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
@@ -409,27 +470,29 @@ export default class RebelChat {
 				'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man2.svg?alt=media&token=379ec88e-bf47-426a-b2d8-8bad167adb8c'
 			);
 
-			var messageTextContainer = document.createElement('div');
+			const messageTextContainer = document.createElement('div');
 			messageTextContainer.setAttribute('class', 'media-body pad-hor');
 
-			var speech = document.createElement('div');
+			const speech = document.createElement('div');
 			speech.setAttribute('class', 'speech');
 
-			var linkHeader = document.createElement('a');
+			const linkHeader = document.createElement('a');
 			linkHeader.setAttribute('class', "media-heading");
 
-			var clientName = document.createElement('b');
+			const clientName = document.createElement('b');
 
-			var name = document.createTextNode('You');
+			const name = document.createTextNode(
+				this.config['clientContactLabel']
+			);
 
-			var time = Utils.buildDateMessageFormat(createdAt);
+			const time = Utils.buildDateMessageFormat(createdAt);
 
-			var textContainer = document.createElement('p');
+			const textContainer = document.createElement('p');
 			textContainer.setAttribute('class', "msg-left");
 
-			var _message = document.createTextNode(message);
+			const _message = document.createTextNode(message);
 
-			var span = document.createElement('span');
+			const span = document.createElement('span');
 			span.setAttribute('style', 'float:right');
 			span.appendChild(time);
 
@@ -546,8 +609,8 @@ export default class RebelChat {
 
 		link.addEventListener('click', (event) => {
 			event.preventDefault();
-			var messageZone = document.getElementById(messageSelector);
-			var message = messageZone.value;
+			const messageZone = document.getElementById(messageSelector);
+			const message = messageZone.value;
 			if ( message && message.length ){
 				messageZone.value = "";
 				this.sendClientMessage(message);
@@ -643,6 +706,7 @@ export default class RebelChat {
 			const message = document.getElementById(
 				Utils.createUniqueIdSelector('rebel-message')
 			).value;
+
 			const user = {
 				'name': name,
 				'email': email
@@ -665,19 +729,13 @@ export default class RebelChat {
 
 	/**
 	 * focusLastMessageChat - Focus the last message in the chat component
-	 *
-	 * @return {type}  description
 	 */
 	focusLastMessageChat( ) {
-		const chatHistory = document.getElementById(
-			Utils.createUniqueIdSelector('chat-history')
+		const chatHistoryContent = document.getElementById(
+			Utils.createUniqueIdSelector('chat-history-content')
 		);
-		if ( chatHistory ) {
-			chatHistory.scrollTop = chatHistory.scrollHeight;
-			// $(chatHistory).mCustomScrollbar(
-			// 		"scrollTo","bottom",
-			// 		{ scrollInertia:0 }
-			// );
+		if ( chatHistoryContent ) {
+			chatHistoryContent.scrollTop = chatHistoryContent.scrollHeight;
 		}
 	}
 
@@ -742,13 +800,19 @@ export default class RebelChat {
 				//TODAY DATE ENTRY
 				this.buildDateEntry();
 				//CHANGE LAST DATE ENTRY
-				var text	= shortDate(dateEntry);
-				var span = entry.getElementsByClassName('hr-title')[0];
+				const text	= shortDate(dateEntry);
+				const span = entry.getElementsByClassName('hr-title')[0];
 				span.innerHTML = text;
 			}
 		}
 	}
 
+
+	/**
+	 * serverMessagesEvent - description
+	 *
+	 * @return {type}  description
+	 */
 	serverMessagesEvent() {
 		FirebaseInstance.newServeMessage(data => {
 			const message = data.val();
@@ -768,22 +832,22 @@ export default class RebelChat {
 
 
 	/**
-	 * isLastMessageFromClient - description
+	 * isLastMessageFromClient - Check the last message is from the client and is the same date
 	 *
-	 * @return {type}  description
+	 * @return {bool}
 	 */
 	isLastMessageFromClient() {
-		return this.LAST_MESSAGE_TYPE == 'CLIENT';
+		return this.LAST_MESSAGE_TYPE == 'CLIENT' && !this.newDateEntryFlag;
 	}
 
 
 	/**
-	 * isLastMessageFromServer - description
+	 * isLastMessageFromServer - Check the last message is from the server and is the same date
 	 *
-	 * @return {type}  description
+	 * @return {bool}
 	 */
 	isLastMessageFromServer() {
-		return this.LAST_MESSAGE_TYPE == 'SERVER';
+		return this.LAST_MESSAGE_TYPE == 'SERVER' && !this.newDateEntryFlag;
 	}
 
 
@@ -807,8 +871,10 @@ export default class RebelChat {
 
 }
 
+
+//TODO REMOVE THIS TO THE PAGE TEST
 document.addEventListener("DOMContentLoaded", function(event) {
 	const chat = new RebelChat({
-		el: 'chat-cmp-container'
+		el: '#chat-cmp-container'
 	});
 });
