@@ -59,7 +59,6 @@
 	position: relative;
 	background: __MSGBOXCOLOR__;
 	color: __MSGCOLOR__;
-	/* display: inline-block; */
 	border-radius: 0;
 	padding: 12px 20px;
 	border-radius: 15px;
@@ -128,11 +127,16 @@
 }
 
 .rebelchat-speech-right>.rebelchat-speech {
-
 	background: __RESPONSEMSGBOXCOLOR__;
 	color: __RESPONSEMSGCOLOR__;
-	/*background: #ffda87;
-	color: #a07617;	*/
+}
+
+.rebelchat-row{
+	display: flex;
+}
+
+.rebelchat-send-button{
+	margin-left: 5px;
 }
 
 .rebelchat-timelabel{
@@ -163,7 +167,6 @@
 
 input.rebelchat-material {
 	color:white;
-	/* font-size:18px; */
 	padding:10px 10px 10px 5px;
 	display:block;
 	width:100%;
@@ -176,14 +179,12 @@ input.rebelchat-material:focus{
 	outline:none;
 }
 
-/* active state */
 input.rebelchat-material:focus ~ label, input.rebelchat-material:valid ~ label 		{
 	top:-20px;
 	font-size:14px;
 	color:white;;
 }
 
-/* BOTTOM BARS ================================= */
 .rebelchat-bar 	{ position:relative; display:block; width:100%; }
 .rebelchat-bar:before, .rebelchat-bar:after 	{
 	content:'';
@@ -205,12 +206,10 @@ input.rebelchat-material:focus ~ label, input.rebelchat-material:valid ~ label 	
 	right:50%;
 }
 
-/* active state */
 input.rebelchat-material:focus ~ .rebelchat-bar:before, input.rebelchat-material:focus ~ .rebelchat-bar:after {
 	width:50%;
 }
 
-/* HIGHLIGHTER ================================== */
 .rebelchat-highlight {
 	position:absolute;
 	height:60%;
@@ -221,14 +220,12 @@ input.rebelchat-material:focus ~ .rebelchat-bar:before, input.rebelchat-material
 	opacity:0.5;
 }
 
-/* active state */
 input.rebelchat-material:focus ~ .rebelchat-highlight {
 	-webkit-animation:inputHighlighter 0.3s ease;
 	-moz-animation:inputHighlighter 0.3s ease;
 	animation:inputHighlighter 0.3s ease;
 }
 
-/* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
 	from { background:white; }
 	to 	{ width:0; background:transparent; }
@@ -257,7 +254,6 @@ input.rebelchat-material:-ms-input-placeholder { /* Internet Explorer 10-11 */
 	color:		white;
 }
 
-/*** DATE ENTRIES ***/
 div.rebelchat-hr {
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -273,7 +269,6 @@ div.rebelchat-hr {
 	color: __HRCOLOR__;
 }
 
-/************** BTN CONTACT FORM ***************/
 .rebelchat-btn.rebelchat-btn-lg {
 	padding: 10px 35px;
 	letter-spacing: 2px;
@@ -294,7 +289,6 @@ div.rebelchat-hr {
 	text-overflow: ellipsis;
 }
 
-/*** CONTACT FORM ****/
 .rebelchat-form input, .rebelchat-form textarea {
 	margin-bottom: 30px;
 }
@@ -367,26 +361,6 @@ div.rebelchat-hr {
 		top: 0;
 	}
 }
-/**** BOOTSTRAP ***/
-/*hr {
-	-webkit-box-sizing: content-box;
-		 -moz-box-sizing: content-box;
-					box-sizing: content-box;
-	height: 0;
-}*/
-
-
-/** {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-*:before,
-*:after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}*/
 
 .rebelchat {
 	-webkit-box-sizing: border-box;

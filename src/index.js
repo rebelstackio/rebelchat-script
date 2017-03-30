@@ -17,6 +17,12 @@ const CONFIG = {
 	MsgBoxColor: '#b7dcfe'
 };
 
+const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man.svg?alt=media&token=f476c305-d215-4c2f-8e15-9196b48d55b3';
+
+const AVATAR_SERVER_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man2.svg?alt=media&token=379ec88e-bf47-426a-b2d8-8bad167adb8c';
+
+const SEND_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/ic_send_white_24px.svg?alt=media&token=75de924a-9d97-490a-892a-071d7cdca391';
+
 const TRUNCATED_LENGTH = 40;
 
 const SEND_MESSAGE_KEY = 13;
@@ -290,7 +296,6 @@ export default class RebelChat {
 
 			if ( !messageExists ) {
 				const messageContainer = document.createElement('li');
-				// messageContainer.setAttribute('style', 'display:none;');
 				messageContainer.setAttribute('class', 'rebelchat-mar-btm rebelchat-server-message');
 				if ( id ) {
 					messageContainer.setAttribute('id', 'message-container-' + id);
@@ -308,7 +313,7 @@ export default class RebelChat {
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
-					'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man.svg?alt=media&token=f476c305-d215-4c2f-8e15-9196b48d55b3'
+					AVATAR_CLIENT_URL
 				);
 
 				const messageTextContainer = document.createElement('div');
@@ -441,8 +446,7 @@ export default class RebelChat {
 		} else {
 			//LAST MESSAGE IS FROM THE SERVER
 			const messageContainer = document.createElement('li');
-			// messageContainer.setAttribute('style', 'display:none;');
-			//
+
 			messageContainer.setAttribute('class', 'rebelchat-mar-btm client-message');
 
 			if ( id ) {
@@ -461,7 +465,7 @@ export default class RebelChat {
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
-				'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man2.svg?alt=media&token=379ec88e-bf47-426a-b2d8-8bad167adb8c'
+				AVATAR_SERVER_URL
 			);
 
 			const messageTextContainer = document.createElement('div');
@@ -522,9 +526,6 @@ export default class RebelChat {
 
 			chatList.appendChild(messageContainer);
 
-			//UGG JQUERY
-			// $(messageContainer).fadeIn( "slow" );
-
 			//SAVE LAST MESSAGE TYPE
 			this.LAST_MESSAGE_TYPE = 'CLIENT';
 
@@ -544,11 +545,11 @@ export default class RebelChat {
 	buildMessageZone() {
 		const messageSelector = Utils.createUniqueIdSelector('message-zone');
 
-		const row = document.createElement('div')
-		row.setAttribute('class', 'row');
+		// const row = document.createElement('div')
+		// row.setAttribute('class', 'row');
 
-		const col11 = document.createElement('div')
-		col11.setAttribute('class', 'col-xs-11');
+		const row = document.createElement('div')
+		row.setAttribute('class', 'rebelchat-row');
 
 		const group = document.createElement('div')
 		group.setAttribute('class', 'rebelchat-group');
@@ -565,29 +566,22 @@ export default class RebelChat {
 		const bar = document.createElement('span');
 		bar.setAttribute('class', 'rebelchat-bar');
 
-		const col1 = document.createElement('div')
-		col1.setAttribute('class', 'col-xs-1');
-		col1.setAttribute('style', 'padding-left: 0px;');
-
 		const link = document.createElement('a')
-		col1.setAttribute('href', '#');
+		link.setAttribute('class', 'rebelchat-send-button')
 
-		const image = document.createElement('span');
-		image.setAttribute('style',"padding-top: 20px;" );
-		image.setAttribute('class',"rebelchat-btn glyphicon glyphicon-send");
-		image.setAttribute('aria-hidden',"true");
+		var image = document.createElement('img');
+		image.setAttribute('style',"padding-top: 10px;" );
+		image.setAttribute('src', SEND_BUTTON_URL);
+		image.setAttribute('alt',"Send");
 		image.setAttribute('title',"Send");
+
+		link.appendChild(image);
 
 		group.appendChild(message);
 		group.appendChild(highlight);
 		group.appendChild(bar);
-		col11.appendChild(group);
-
-		link.appendChild(image);
-		col1.appendChild(link);
-
-		row.appendChild(col11);
-		row.appendChild(col1);
+		row.appendChild(group);
+		row.appendChild(link);
 
 		message.addEventListener('keypress', (event) => {
 			const message = event.target.value;
@@ -626,7 +620,6 @@ export default class RebelChat {
 		form.setAttribute('id', Utils.createUniqueIdSelector('rebel-contact-form'));
 		form.setAttribute('class', 'contact-form rebelchat-form');
 		form.setAttribute('role',	'form');
-		// form.setAttribute('style','display:none;');
 
 		//NAME INPUT
 		let input = document.createElement('input');
@@ -677,8 +670,6 @@ export default class RebelChat {
 		formContainer.innerHTML = "";
 		formContainer.appendChild(form);
 
-		//UGG JQUERY
-		// $( "#contact-form" ).fadeIn( "slow" );
 		// HTML ->
 		// <form class="contact-form" role="form" action="https://secure.mailjol.net/allforms/u/a5b1c394.php">
 		// 	<input type="text" class="rebelchat-form-control" id="Name" name="Name" placeholder="Name" required>
