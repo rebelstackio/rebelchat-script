@@ -4,6 +4,7 @@
 
 .rebelchat-container{
 	font-size: 14px;
+	background-color: ___BGCOLOR___
 }
 
 .rebelchat-nano {
@@ -56,8 +57,8 @@
 
 .rebelchat-speech {
 	position: relative;
-	background: #b7dcfe;
-	color: #317787;
+	background: __MSGBOXCOLOR__;
+	color: __MSGCOLOR__;
 	/* display: inline-block; */
 	border-radius: 0;
 	padding: 12px 20px;
@@ -76,7 +77,7 @@
 	top: 0;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
-	border-right: 15px solid #b7dcfe;
+	border-right: 15px solid __MSGBOXCOLOR__;
 	margin: 15px 0 0 -6px;
 }
 
@@ -92,8 +93,8 @@
 
 .rebelchat-speech .rebelchat-media-heading {
 	font-size: 12px;
-	color: #317787;
-	display: block;
+	color: __MSGCOLOR__;
+	display: flex;
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 	margin-bottom: 10px;
 	padding-bottom: 5px;
@@ -115,23 +116,33 @@
 .rebelchat-msg-left{
 	margin-bottom:0px;
 	text-align: justify;
-	font-size:13px
+	font-size:13px;
+	word-wrap: break-word;
 }
 
 .rebelchat-msg-right{
 	margin-bottom:0px;
 	text-align:justify;
-	font-size:13px
+	font-size:13px;
+	word-wrap: break-word;
 }
 
 .rebelchat-speech-right>.rebelchat-speech {
-	background: #ffda87;
-	color: #a07617;
-	/* text-align: right; */
+
+	background: __RESPONSEMSGBOXCOLOR__;
+	color: __RESPONSEMSGCOLOR__;
+	/*background: #ffda87;
+	color: #a07617;	*/
+}
+
+.rebelchat-timelabel{
+	float:right;
+	margin-left: 2px;
 }
 
 .rebelchat-speech-right>.rebelchat-speech .rebelchat-media-heading {
-	color: #a07617;
+	display: flex;
+	color: __RESPONSEMSGCOLOR__;
 }
 
 .rebelchat-form-control {
@@ -157,7 +168,7 @@ input.rebelchat-material {
 	display:block;
 	width:100%;
 	border:none;
-	border-bottom:1px solid #757575;
+	border-bottom:1px solid #f6ebeb;
 	background-color: transparent;
 }
 
@@ -251,15 +262,15 @@ div.rebelchat-hr {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 0;
-	border-top: 1px solid white;
+	border-top: 1px solid __HRCOLOR__;
 	text-align: center;
 	height: 0px;
 	line-height: 0px;
 }
 
 .rebelchat-hr-title {
-	background-color: #bf4d28;
-	color: white;
+	background-color: ___BGCOLOR___;
+	color: __HRCOLOR__;
 }
 
 /************** BTN CONTACT FORM ***************/
@@ -274,6 +285,13 @@ div.rebelchat-hr {
 	color: #fff;
 	background-color: #3299bb;
 	border-color: white;
+}
+
+.rebelchat-chat-name {
+	flex: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /*** CONTACT FORM ****/

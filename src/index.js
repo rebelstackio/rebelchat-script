@@ -9,6 +9,12 @@ const CONFIG = {
 	chatInputPlaceholder: 'Enter your message',
 	serverContactLabel: 'RebelStack\'s Team',
 	clientContactLabel: 'You',
+	bgColor: '#bf4d28',
+	hrColor: 'white',
+	responseMsgBoxColor: '#ffda87',
+	responseMsgColor:'#a07617',
+	MsgColor: '#317787',
+	MsgBoxColor: '#b7dcfe'
 };
 
 const TRUNCATED_LENGTH = 40;
@@ -53,13 +59,21 @@ export default class RebelChat {
 	 * @return {type}  description
 	 */
 	loadStyles() {
+		//REPLACE BG COLOR
+		let _css = css.replace(/___BGCOLOR___/g, this.config['bgColor']);
+		_css = _css.replace(/__HRCOLOR__/g, this.config['hrColor']);
+		_css = _css.replace(/__RESPONSEMSGBOXCOLOR__/g, this.config['responseMsgBoxColor']);
+		_css = _css.replace(/__RESPONSEMSGCOLOR__/g, this.config['responseMsgColor']);
+		_css = _css.replace(/__MSGCOLOR__/g, this.config['MsgColor']);
+		_css = _css.replace(/__MSGBOXCOLOR__/g, this.config['MsgBoxColor']);
+
 		const head = document.head || document.getElementsByTagName('head')[0];
 		const style = document.createElement('style');
 		style.type = 'text/css';
 		if (style.styleSheet){
-			style.styleSheet.cssText = css;
+			style.styleSheet.cssText = _css;
 		} else {
-			style.appendChild(document.createTextNode(css));
+			style.appendChild(document.createTextNode(_css));
 		}
 		head.appendChild(style);
 	}
@@ -86,6 +100,9 @@ export default class RebelChat {
 		});
 	}
 
+	buildChatError() {
+
+	}
 
 	/**
 	 * buildPreviousConversation -  Build previous conversation
@@ -304,6 +321,7 @@ export default class RebelChat {
 				linkHeader.setAttribute('class', "rebelchat-media-heading");
 
 				const clientName = document.createElement('b');
+				clientName.setAttribute('class', 'rebelchat-chat-name');
 
 				const name = document.createTextNode(
 					this.config['serverContactLabel']
@@ -319,7 +337,8 @@ export default class RebelChat {
 				const _message = document.createTextNode(message);
 
 				const span = document.createElement('span');
-				span.setAttribute('style', 'float:right');
+				// span.setAttribute('style', 'float:right');
+				span.setAttribute('class', 'rebelchat-timelabel');
 				span.appendChild(domTime);
 
 				textContainer.appendChild(_message);
@@ -394,7 +413,7 @@ export default class RebelChat {
 			}
 
 			const textContainer = document.createElement('p');
-			textContainer.setAttribute('class', "msg-left");
+			textContainer.setAttribute('class', "rebelchat-rebelchat-msg-left");
 			textContainer.setAttribute('title', time);
 
 			//ADD STYLE WHEN
@@ -455,6 +474,7 @@ export default class RebelChat {
 			linkHeader.setAttribute('class', "rebelchat-media-heading");
 
 			const clientName = document.createElement('b');
+			clientName.setAttribute('class', 'rebelchat-chat-name');
 
 			const name = document.createTextNode(
 				this.config['clientContactLabel']
@@ -464,12 +484,13 @@ export default class RebelChat {
 			const domTime = document.createTextNode(time);
 
 			const textContainer = document.createElement('p');
-			textContainer.setAttribute('class', "msg-left");
+			textContainer.setAttribute('class', "rebelchat-msg-left");
 
 			const _message = document.createTextNode(message);
 
 			const span = document.createElement('span');
-			span.setAttribute('style', 'float:right');
+			// span.setAttribute('style', 'float:right');
+			span.setAttribute('class', 'rebelchat-timelabel');
 			span.appendChild(domTime);
 
 			textContainer.appendChild(_message);
@@ -761,9 +782,7 @@ export default class RebelChat {
 
 
 	/**
-	 * checkLastDateEntry - description
-	 *
-	 * @return {type}  description
+	 * checkLastDateEntry - Check current date with the last date entry
 	 */
 	checkLastDateEntry() {
 		const dateEntries = document.getElementsByClassName("rebelchat-date-entry");
@@ -784,11 +803,8 @@ export default class RebelChat {
 		}
 	}
 
-
 	/**
-	 * serverMessagesEvent - description
-	 *
-	 * @return {type}  description
+	 * serverMessagesEvent - New server messages event
 	 */
 	serverMessagesEvent() {
 		FirebaseInstance.newServeMessage(data => {
