@@ -13,8 +13,10 @@ const CONFIG = {
 	hrColor: 'white',
 	responseMsgBoxColor: '#ffda87',
 	responseMsgColor:'#a07617',
-	MsgColor: '#317787',
-	MsgBoxColor: '#b7dcfe'
+	msgColor: '#317787',
+	msgBoxColor: '#b7dcfe',
+	inputChatColor: 'white',
+	inputChatBorderColor: '#f6ebeb'
 };
 
 const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man.svg?alt=media&token=f476c305-d215-4c2f-8e15-9196b48d55b3';
@@ -29,7 +31,7 @@ const SEND_MESSAGE_KEY = 13;
 
 const DEFAULT_DATE_ENTRY = 'Today';
 
-export default class RebelChat {
+class RebelChat {
 
 	constructor( config ){
 		const _config = this.validateConfig(config);
@@ -70,8 +72,10 @@ export default class RebelChat {
 		_css = _css.replace(/__HRCOLOR__/g, this.config['hrColor']);
 		_css = _css.replace(/__RESPONSEMSGBOXCOLOR__/g, this.config['responseMsgBoxColor']);
 		_css = _css.replace(/__RESPONSEMSGCOLOR__/g, this.config['responseMsgColor']);
-		_css = _css.replace(/__MSGCOLOR__/g, this.config['MsgColor']);
-		_css = _css.replace(/__MSGBOXCOLOR__/g, this.config['MsgBoxColor']);
+		_css = _css.replace(/__MSGCOLOR__/g, this.config['msgColor']);
+		_css = _css.replace(/__MSGBOXCOLOR__/g, this.config['msgBoxColor']);
+		_css = _css.replace(/__INPUTCHATCOLOR__/g, this.config['inputChatColor']);
+		_css = _css.replace(/__INPUTCHATBORDERCOLOR__/g, this.config['inputChatBorderColor']);
 
 		const head = document.head || document.getElementsByTagName('head')[0];
 		const style = document.createElement('style');
@@ -854,11 +858,5 @@ export default class RebelChat {
 	}
 
 }
-
-
-//TODO REMOVE THIS TO THE PAGE TEST
-document.addEventListener("DOMContentLoaded", function(event) {
-	const chat = new RebelChat({
-		el: '#chat-cmp-container'
-	});
-});
+//MAKE REBELCHAT AVAILABLE
+window.RebelChat = RebelChat;

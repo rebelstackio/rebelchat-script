@@ -85,7 +85,7 @@
 	right: 0;
 	border-top: 7px solid transparent;
 	border-bottom: 7px solid transparent;
-	border-left: 7px solid #ffdc91;
+	border-left: 7px solid __RESPONSEMSGBOXCOLOR__;
 	border-right: 0;
 	margin: 15px -6px 0 0;
 }
@@ -166,12 +166,12 @@
 }
 
 input.rebelchat-material {
-	color:white;
+	color:__INPUTCHATCOLOR__;
 	padding:10px 10px 10px 5px;
 	display:block;
 	width:100%;
 	border:none;
-	border-bottom:1px solid #f6ebeb;
+	border-bottom:1px solid __INPUTCHATCOLOR__;
 	background-color: transparent;
 }
 
@@ -182,7 +182,7 @@ input.rebelchat-material:focus{
 input.rebelchat-material:focus ~ label, input.rebelchat-material:valid ~ label 		{
 	top:-20px;
 	font-size:14px;
-	color:white;;
+	color:__INPUTCHATCOLOR__;
 }
 
 .rebelchat-bar 	{ position:relative; display:block; width:100%; }
@@ -192,7 +192,7 @@ input.rebelchat-material:focus ~ label, input.rebelchat-material:valid ~ label 	
 	width:0;
 	bottom:1px;
 	position:absolute;
-	background:white;;
+	background:__INPUTCHATCOLOR__;
 	transition:0.2s ease all;
 	-moz-transition:0.2s ease all;
 	-webkit-transition:0.2s ease all;
@@ -227,31 +227,31 @@ input.rebelchat-material:focus ~ .rebelchat-highlight {
 }
 
 @-webkit-keyframes inputHighlighter {
-	from { background:white; }
+	from { background:__INPUTCHATCOLOR__; }
 	to 	{ width:0; background:transparent; }
 }
 @-moz-keyframes inputHighlighter {
-	from { background:white; }
+	from { background:__INPUTCHATCOLOR__; }
 	to 	{ width:0; background:transparent; }
 }
 @keyframes inputHighlighter {
-	from { background:white; }
+	from { background:__INPUTCHATCOLOR__; }
 	to 	{ width:0; background:transparent; }
 }
 
 input.rebelchat-material::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-	color:		white;
+	color:		__INPUTCHATCOLOR__;
 }
 input.rebelchat-material:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	color:		white;
+	color:		__INPUTCHATCOLOR__;
 	opacity:	1;
 }
 input.rebelchat-material::-moz-placeholder { /* Mozilla Firefox 19+ */
-	color:		white;
+	color:		__INPUTCHATCOLOR__;
 	opacity:	1;
 }
 input.rebelchat-material:-ms-input-placeholder { /* Internet Explorer 10-11 */
-	color:		white;
+	color:		__INPUTCHATCOLOR__;
 }
 
 div.rebelchat-hr {

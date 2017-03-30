@@ -7,6 +7,7 @@
 		<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" > -->
 	</head>
 	<body style="background-color: #bf4d28 !important;">
+	<!-- <body> -->
 
 		<div class="container" style="padding: 40px 40px;">
 			<div class="row">
@@ -20,6 +21,11 @@
 			</div>
 		</div>
 		<script>
+			document.addEventListener("DOMContentLoaded", function(event) {
+				const chat = new RebelChat({
+					el: '#chat-cmp-container'
+				});
+			});
 		</script>
 	</body>
 </html>
