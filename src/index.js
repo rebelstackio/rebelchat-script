@@ -2,7 +2,7 @@ import FirebaseInstance from './firebase';
 import Utils from './util';
 import css from './assets/css/style.css';
 import animate from './assets/css/animate.min.css';
-
+import Modal from './modal';
 
 const CONFIG = {
 	el: 'rebelchat',
@@ -206,12 +206,20 @@ class RebelChat {
 		chatDiv.setAttribute('class', 'rebelchat-container');
 		chatDiv.setAttribute('id', Utils.createUniqueIdSelector('chat-container'));
 
+		//MODAL
+
+
 		//CONFIG BUTTOM
 		const config = document.createElement('a');
 		config.setAttribute('class', 'rebelchat-config');
 		config.setAttribute('id', 'config');
 		config.setAttribute('href', '#');
 		config.setAttribute('title', 'Chat Settings');
+		const modal = new Modal('settings');
+		config.addEventListener('click', (event) => {
+			modal.buildChatSettingsModal('Settings', this.config['el']);
+			modal.show();
+		});
 
 		const configImg = document.createElement('img');
 		configImg.setAttribute('alt', 'Chat Settings');
