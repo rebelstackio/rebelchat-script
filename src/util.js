@@ -95,4 +95,27 @@ export default class Utils {
 		);
 	}
 
+
+	/**
+	 * static - Add animation to the element
+	 *
+	 * @param  {type} element   DOM element
+	 * @param  {type} ...params Animate classes Name
+	 */
+	static animate ( element, ...params ) {
+		for (let i = 0, length = params.length; i < length; i++) {
+			element.classList.add( params[i]);
+		}
+		const endAnimation = function() {
+			for (let i = 0, length = params.length; i < length; i++) {
+				element.classList.remove('animated' + params[i]);
+			}
+		}
+		element.addEventListener('webkitAnimationEnd',endAnimation);
+		element.addEventListener('mozAnimationEnd',endAnimation);
+		element.addEventListener('MSAnimationEnd',endAnimation);
+		element.addEventListener('oanimationend',endAnimation);
+		element.addEventListener('animationend',endAnimation);
+	}
+
 }

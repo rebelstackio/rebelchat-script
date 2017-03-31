@@ -1,6 +1,7 @@
 import FirebaseInstance from './firebase';
 import Utils from './util';
 import css from './assets/css/style.css';
+import animate from './assets/css/animate.min.css';
 
 
 const CONFIG = {
@@ -16,14 +17,20 @@ const CONFIG = {
 	msgColor: '#317787',
 	msgBoxColor: '#b7dcfe',
 	inputChatColor: 'white',
-	inputChatBorderColor: '#f6ebeb'
+	inputChatBorderColor: '#f6ebeb',
+	audioNotification: true,
+	changePageTitle: true
 };
 
-const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man.svg?alt=media&token=f476c305-d215-4c2f-8e15-9196b48d55b3';
+const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/avatars%2Fman2.svg?alt=media&token=ca8142b7-1e09-4d7c-bc5d-74cfcca14fd4';
 
-const AVATAR_SERVER_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/man2.svg?alt=media&token=379ec88e-bf47-426a-b2d8-8bad167adb8c';
+const AVATAR_SERVER_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Foperator.svg?alt=media&token=41ea5597-63a4-40b2-9bd9-875e55433df1';
 
-const SEND_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/ic_send_white_24px.svg?alt=media&token=75de924a-9d97-490a-892a-071d7cdca391';
+const SEND_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Fic_send_white_24px.svg?alt=media&token=2e8f2366-76f8-4033-bb46-f6eb07d0a064';
+
+const CONFIG_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Fgear.png?alt=media&token=35b8e227-0e9c-4bfa-880c-ae203e74d8c3';
+
+const NEW_MESSAGE_SOUND = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Faudio%2Fyour-turn.mp3?alt=media&token=4b4a48ad-1a7e-487c-b394-2f86edfbbe17';
 
 const TRUNCATED_LENGTH = 40;
 
@@ -40,6 +47,9 @@ class RebelChat {
 		this.loadStyles();
 		FirebaseInstance.init();
 		this.newDateEntryFlag = false;
+		this.newMessagesFlag = false;
+		this.pageTitle = document.title;
+		this.newMessagesCount = 0;
 		this.init();
 	}
 
@@ -85,7 +95,17 @@ class RebelChat {
 		} else {
 			style.appendChild(document.createTextNode(_css));
 		}
+
+		const animateStyle = document.createElement('style');
+		animateStyle.type = 'text/css';
+		if (animateStyle.styleSheet){
+			animateStyle.styleSheet.cssText = animate;
+		} else {
+			animateStyle.appendChild(document.createTextNode(animate));
+		}
+
 		head.appendChild(style);
+		head.appendChild(animateStyle);
 	}
 
 	/**
@@ -98,6 +118,7 @@ class RebelChat {
 		this.serverMessagesEvent();
 		//GET THE PREVIOUS MESSAGES
 		FirebaseInstance.getMessages().then(snap => {
+			this.newMessagesFlag = true;
 			const data = snap.val();
 			if ( data ){
 				this.buildPreviousConversation(data);
@@ -181,11 +202,27 @@ class RebelChat {
 
 	buildChatComponent( message ) {
 		const form = document.getElementById(this.config['el']);
-
 		const chatDiv = document.createElement('div');
 		chatDiv.setAttribute('class', 'rebelchat-container');
 		chatDiv.setAttribute('id', Utils.createUniqueIdSelector('chat-container'));
 
+		//CONFIG BUTTOM
+		const config = document.createElement('a');
+		config.setAttribute('class', 'rebelchat-config');
+		config.setAttribute('id', 'config');
+		config.setAttribute('href', '#');
+		config.setAttribute('title', 'Chat Settings');
+
+		const configImg = document.createElement('img');
+		configImg.setAttribute('alt', 'Chat Settings');
+		configImg.setAttribute('width', '15px');
+		configImg.setAttribute('height', '15px');
+		configImg.setAttribute(
+			'src',
+			CONFIG_BUTTON_URL
+		);
+
+		config.appendChild(configImg);
 
 		const chatHistoryDiv = document.createElement('div');
 		chatHistoryDiv.setAttribute('class', 'rebelchat-nano has-scrollbar');
@@ -204,6 +241,7 @@ class RebelChat {
 
 		chatHistoryContent.appendChild(chatUl);
 		chatHistoryDiv.appendChild(chatHistoryContent);
+		chatDiv.appendChild(config);
 		chatDiv.appendChild(chatHistoryDiv);
 		chatDiv.appendChild(messageZone);
 
@@ -211,27 +249,13 @@ class RebelChat {
 
 		form.appendChild(chatDiv);
 
-		//FOCUS
-		// messageZone.focus();
-
 		//SEND CLIENT MESSAGE
 		if ( message ){
 			this.sendClientMessage(message);
 		}
 
-		//HACK FOR SCROLL BAR
-		// $(chatHistoryDiv).mCustomScrollbar({
-		// 	autoHideScrollbar: true
-		// });
-
-		// setTimeout(function(){
-		// 	ContactUsForm.focusLastMessageChat();
-		// }, 1000);
-
-
-		//UGG JQUERY
-		// $( "#chat-container" ).fadeIn( "slow" );
-
+		//ADD ANIMATION
+		Utils.animate(chatDiv, 'animated', 'fadeIn');
 	}
 
 
@@ -282,14 +306,10 @@ class RebelChat {
 			textContainer.setAttribute('title', time);
 
 			const _message = document.createTextNode(message);
-
-			// const span = document.createElement('span');
-			// span.setAttribute('style', 'float:right');
-			// span.appendChild(domTime);
-
 			textContainer.appendChild(_message);
-			// textContainer.appendChild(span);
 			speech.appendChild(textContainer);
+
+			Utils.animate(textContainer,  'animated', 'fadeIn');
 
 			//FOCUS LAST MESSAGE
 			this.focusLastMessageChat();
@@ -317,7 +337,7 @@ class RebelChat {
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
-					AVATAR_CLIENT_URL
+					AVATAR_SERVER_URL
 				);
 
 				const messageTextContainer = document.createElement('div');
@@ -379,8 +399,7 @@ class RebelChat {
 				if ( chatList ){
 					chatList.appendChild(messageContainer);
 
-					//UGG JQUERY
-					// $(messageContainer).fadeIn( "slow" );
+					Utils.animate(messageContainer,  'animated', 'fadeIn');
 
 					//SAVE LAST MESSAGE TYPE
 					this.LAST_MESSAGE_TYPE = 'SERVER';
@@ -422,7 +441,7 @@ class RebelChat {
 			}
 
 			const textContainer = document.createElement('p');
-			textContainer.setAttribute('class', "rebelchat-rebelchat-msg-left");
+			textContainer.setAttribute('class', "rebelchat-msg-left");
 			textContainer.setAttribute('title', time);
 
 			//ADD STYLE WHEN
@@ -434,21 +453,17 @@ class RebelChat {
 			}
 
 			const _message = document.createTextNode(message);
-
-			// const span = document.createElement('span');
-			// span.setAttribute('style', 'float:right');
-			// span.appendChild(time);
-
 			textContainer.appendChild(_message);
-			// textContainer.appendChild(span);
 			speech.appendChild(textContainer);
+
+			Utils.animate(textContainer,  'animated', 'fadeIn');
 
 			//FOCUS LAST MESSAGE
 			this.focusLastMessageChat();
 
 			return lastMessage;
 		} else {
-			//LAST MESSAGE IS FROM THE SERVER
+			//LAST MESSAGE IS FROM THE SERVER SO THE MESSAGE REQUIRES A NEW BOX
 			const messageContainer = document.createElement('li');
 
 			messageContainer.setAttribute('class', 'rebelchat-mar-btm client-message');
@@ -469,7 +484,7 @@ class RebelChat {
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
-				AVATAR_SERVER_URL
+				AVATAR_CLIENT_URL
 			);
 
 			const messageTextContainer = document.createElement('div');
@@ -528,7 +543,10 @@ class RebelChat {
 			// 	icon.setAttribute('title', 'Message sent');
 			// }
 
+
 			chatList.appendChild(messageContainer);
+
+			Utils.animate(messageContainer, 'animated', 'fadeIn');
 
 			//SAVE LAST MESSAGE TYPE
 			this.LAST_MESSAGE_TYPE = 'CLIENT';
@@ -601,6 +619,12 @@ class RebelChat {
 					event.target.value = message.slice(0, -1);
 				}
 			}
+		});
+
+		//FOCUS TEXT INPUT
+		message.addEventListener('focus', (event) => {
+			this.newMessagesCount = 0;
+			this.changeHeadTitleByMessages();
 		});
 
 		link.addEventListener('click', (event) => {
@@ -807,6 +831,11 @@ class RebelChat {
 			//GET ONLY THE SERVER MESSAGES
 			if ( message && message['source'] == 'SERVER' ){
 				this.checkLastDateEntry();
+
+				//FIRE NEW MESSAGES ACTIONS
+				this.fireNewMessagesActions()
+
+				//BUILD MESSAGE
 				this.buildServerMessage(
 					message['message'],
 					message['createdAt'],
@@ -816,6 +845,42 @@ class RebelChat {
 				);
 			}
 		});
+	}
+
+	/**
+	 * fireNewMessagesActions - Fire actions when a new server's message arrive
+	 */
+	fireNewMessagesActions() {
+
+		//AUDIO NOTIFICACION
+		if ( this.newMessagesFlag && this.config['audioNotification']) {
+			if ( Audio ) {
+				const audio = new Audio([NEW_MESSAGE_SOUND]);
+				if ( audio ) {
+					audio.play();
+				}
+			}
+		}
+
+		//CHANGE HEAD TITLE
+		if ( this.newMessagesFlag ) {
+			this.newMessagesCount ++;
+			this.changeHeadTitleByMessages();
+		}
+	}
+
+
+	/**
+	 * changeHeadTitleByMessages - Change page's title base on the new messages
+	 */
+	changeHeadTitleByMessages() {
+		if ( this.config['changePageTitle'] ) {
+			if ( this.newMessagesCount > 0 ) {
+				document.title = '(' + this.newMessagesCount + ') ' + this.pageTitle;
+			} else {
+				document.title = this.pageTitle;
+			}
+		}
 	}
 
 

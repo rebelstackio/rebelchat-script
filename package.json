@@ -34,6 +34,7 @@
     "webpack-uglify-js-plugin": "^1.1.9"
   },
   "dependencies": {
+    "animate.css": "^3.5.2",
     "firebase": "^3.7.3"
   }
 }
