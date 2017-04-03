@@ -29,8 +29,8 @@
 	padding: 15px;
 }
 
-.rebelchat-mar-btm {
-	margin-bottom: 15px;
+li.rebelchat-mar-btm {
+	margin-bottom: 15px !important;
 }
 
 .rebelchat-media-block .rebelchat-media-left {
@@ -42,6 +42,13 @@
 .rebelchat-img-sm {
 	width: 46px;
 	height: 46px;
+}
+
+img.rebelchat-img{
+	background-color: transparent;
+	box-shadow: none;
+	border: none;
+	-webkit-box-shadow:none;
 }
 
 .rebelchat-media-block .rebelchat-media-body {

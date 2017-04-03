@@ -20,12 +20,13 @@ import Utils from './util';
 
 export default class RebelModal {
 
-	constructor( id ) {
+	constructor( id , userSettings) {
 		this.id = id;
 		this.backdrop = null;
 		this.modalContainer = null;
 		this.title = null;
 		this.modalBody = null;
+		this.userSettings = userSettings;
 	}
 
  	/**
@@ -152,12 +153,16 @@ export default class RebelModal {
 		soundsCheckbox.setAttribute('type', 'checkbox')
 		const textSound = document.createTextNode('Enable sounds notifications');
 
+		if ( this.userSettings['audioNotification'] ) {
+			soundsCheckbox.setAttribute('checked', true);
+		}
+
 		soundsLabel.appendChild(soundsCheckbox);
 		soundsLabel.appendChild(textSound);
 		soundsDiv.appendChild(soundsLabel);
 		this.modalBody.appendChild(soundsDiv);
 
-		//ENABLE SOUNDS CHECKBOX
+		//ENABLE WEB CHECKBOX
 		const webNotificationDiv = document.createElement('div');
 		webNotificationDiv.setAttribute('class', 'rebelchat-checkbox');
 		const webLabel = document.createElement('label');
@@ -165,6 +170,10 @@ export default class RebelModal {
 		const webCheckbox = document.createElement('input');
 		webCheckbox.setAttribute('type', 'checkbox')
 		const textWeb = document.createTextNode('Enable web notifications');
+
+		if ( this.userSettings['webNotification'] ) {
+			webCheckbox.setAttribute('checked', true);
+		}
 
 		webLabel.appendChild(webCheckbox);
 		webLabel.appendChild(textWeb);

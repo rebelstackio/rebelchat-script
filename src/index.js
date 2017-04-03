@@ -4,6 +4,7 @@ import css from './assets/css/__STYLE__';
 import animate from './assets/css/animate.min.css';
 import Modal from './modal';
 import CONFIG from './defaultProps';
+import User from './models/user';
 
 const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/avatars%2Fman2.svg?alt=media&token=ca8142b7-1e09-4d7c-bc5d-74cfcca14fd4';
 
@@ -22,16 +23,20 @@ const SEND_MESSAGE_KEY = 13;
 class RebelChat {
 
 	constructor( config ){
-		const _config = this.validateConfig(config);
-		this.id = Utils.generateUniqueId();
-		this.config = Object.assign(CONFIG, _config);
-		this.loadStyles();
-		FirebaseInstance.init();
-		this.newDateEntryFlag = false;
-		this.newMessagesFlag = false;
-		this.pageTitle = document.title;
-		this.newMessagesCount = 0;
-		this.init();
+		User.getSettings().then( userSettings => {
+			const _config = this.validateConfig(config);
+			this.id = Utils.generateUniqueId();
+			this.config = Object.assign(CONFIG, _config, userSettings);
+			this.loadStyles();
+			FirebaseInstance.init();
+			this.newDateEntryFlag = false;
+			this.newMessagesFlag = false;
+			this.pageTitle = document.title;
+			this.newMessagesCount = 0;
+			this.init();
+		}).catch ( error =>{
+			console.log('--->', error);
+		});
 	}
 
 
@@ -196,13 +201,14 @@ class RebelChat {
 		config.setAttribute('id', 'config');
 		config.setAttribute('href', '#');
 		config.setAttribute('title', 'Chat Settings');
-		const modal = new Modal('settings');
+		const modal = new Modal('settings', this.config);
 		config.addEventListener('click', (event) => {
 			modal.buildChatSettingsModal('Chat Settings', this.config['el']);
 			modal.show();
 		});
 
 		const configImg = document.createElement('img');
+		configImg.setAttribute('class', 'rebelchat-img');
 		configImg.setAttribute('alt', 'Chat Settings');
 		configImg.setAttribute('width', '15px');
 		configImg.setAttribute('height', '15px');
@@ -322,7 +328,7 @@ class RebelChat {
 				avatarZone.setAttribute('class', 'rebelchat-media-right');
 
 				const avatar = document.createElement('img');
-				avatar.setAttribute('class', 'rebelchat-img-sm');
+				avatar.setAttribute('class', 'rebelchat-img rebelchat-img-sm');
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
@@ -469,7 +475,7 @@ class RebelChat {
 			avatarZone.setAttribute('class', 'rebelchat-media-left');
 
 			const avatar = document.createElement('img');
-			avatar.setAttribute('class', 'rebelchat-img-sm');
+			avatar.setAttribute('class', 'rebelchat-img rebelchat-img-sm');
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
@@ -581,6 +587,7 @@ class RebelChat {
 		link.setAttribute('class', 'rebelchat-send-button')
 
 		var image = document.createElement('img');
+		image.setAttribute('class',"rebelchat-img" );
 		image.setAttribute('style',"padding-top: 10px;" );
 		image.setAttribute('src', SEND_BUTTON_URL);
 		image.setAttribute('alt',"Send");
@@ -726,9 +733,9 @@ class RebelChat {
 			this.buildChatComponent(message);
 
 			// ASK FOR PERMISSION TO WEB NOTIFICATION
-			if ( window.Notification ){
-				window.Notification.requestPermission();
-			}
+			// if ( window.Notification ){
+			// 	window.Notification.requestPermission();
+			// }
 		}
 	}
 

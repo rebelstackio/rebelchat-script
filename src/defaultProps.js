@@ -12,7 +12,8 @@ export default {
 	msgBoxColor: '#b7dcfe',
 	inputChatColor: 'white',
 	inputChatBorderColor: '#f6ebeb',
-	audioNotification: true,
 	changePageTitle: true,
-	dateEntryLabel: 'Today'
+	dateEntryLabel: 'Today',
+	audioNotification: true,
+	webNotification: false
 };
