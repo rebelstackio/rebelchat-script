@@ -217,7 +217,7 @@ class RebelChat {
 		config.setAttribute('title', 'Chat Settings');
 		const modal = new Modal('settings');
 		config.addEventListener('click', (event) => {
-			modal.buildChatSettingsModal('Settings', this.config['el']);
+			modal.buildChatSettingsModal('Chat Settings', this.config['el']);
 			modal.show();
 		});
 

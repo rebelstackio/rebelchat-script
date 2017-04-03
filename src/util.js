@@ -108,7 +108,7 @@ export default class Utils {
 		}
 		const endAnimation = function() {
 			for (let i = 0, length = params.length; i < length; i++) {
-				element.classList.remove('animated' + params[i]);
+				element.classList.remove( params[i] );
 			}
 		}
 		element.addEventListener('webkitAnimationEnd',endAnimation);
