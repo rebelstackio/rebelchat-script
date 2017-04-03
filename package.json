@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/rebelstackio/rebelchat-script#readme",
   "scripts": {
-    "build": "NODE_ENV=production node_modules/.bin/webpack --watch --colors",
-    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --progress --colors"
+    "build": "npm run mincss && NODE_ENV=production node_modules/.bin/webpack --watch --colors",
+    "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --progress --colors",
+    "mincss": "NODE_ENV=development node_modules/.bin/minify --output  ./src/assets/css/style.min.css ./src/assets/css/style.css"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -28,9 +29,11 @@
     "babel-preset-es2015": "^6.22.0",
     "copy-webpack-plugin": "^4.0.1",
     "html-webpack-plugin": "^2.28.0",
+    "minifier": "^0.8.1",
     "raw-loader": "^0.5.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
+    "webpack-replace": "^1.0.0",
     "webpack-uglify-js-plugin": "^1.1.9"
   },
   "dependencies": {

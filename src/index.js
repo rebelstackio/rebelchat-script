@@ -1,26 +1,9 @@
 import FirebaseInstance from './firebase';
 import Utils from './util';
-import css from './assets/css/style.css';
+import css from './assets/css/__STYLE__';
 import animate from './assets/css/animate.min.css';
 import Modal from './modal';
-
-const CONFIG = {
-	el: 'rebelchat',
-	contactLabel: 'Send Message',
-	chatInputPlaceholder: 'Enter your message',
-	serverContactLabel: 'RebelStack\'s Team',
-	clientContactLabel: 'You',
-	bgColor: '#bf4d28',
-	hrColor: 'white',
-	responseMsgBoxColor: '#ffda87',
-	responseMsgColor:'#a07617',
-	msgColor: '#317787',
-	msgBoxColor: '#b7dcfe',
-	inputChatColor: 'white',
-	inputChatBorderColor: '#f6ebeb',
-	audioNotification: true,
-	changePageTitle: true
-};
+import CONFIG from './defaultProps';
 
 const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/avatars%2Fman2.svg?alt=media&token=ca8142b7-1e09-4d7c-bc5d-74cfcca14fd4';
 

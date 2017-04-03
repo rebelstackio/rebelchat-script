@@ -28,6 +28,14 @@ const config = {
 	module:{
 		loaders:[
 			{
+				test: /src\/index\.js$/,
+				loader: 'webpack-replace',
+				query: {
+					search: '__STYLE__',
+					replace: 'style.css'
+				}
+			},
+			{
 				test: /(\.js)$/,
 				exclude: /node_modules/,
 				loader:'babel-loader',
@@ -68,6 +76,8 @@ if (process.env.NODE_ENV === 'production') {
 			}
 		})
 	)
+	
+	config.module.loaders[0].query.replace = 'style.min.css';
 }
 
 
