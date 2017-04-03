@@ -196,7 +196,7 @@ export default class RebelModal {
 		this.modalBody.appendChild(historyDiv);
 
 		//AVATAR SELECTION
-		const avatarTitle = this.buildBlockTitle('Avatar');
+		const avatarTitle = this.buildBlockTitle('Avatars');
 		this.modalBody.appendChild(avatarTitle);
 	}
 

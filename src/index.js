@@ -19,8 +19,6 @@ const TRUNCATED_LENGTH = 40;
 
 const SEND_MESSAGE_KEY = 13;
 
-const DEFAULT_DATE_ENTRY = 'Today';
-
 class RebelChat {
 
 	constructor( config ){
@@ -756,12 +754,12 @@ class RebelChat {
 	buildDateEntry( timestamp ) {
 		let text = '';
 		if ( !timestamp ) {
-			text = DEFAULT_DATE_ENTRY;
+			text = this.config['dateEntryLabel'];
 			timestamp = new Date().getTime();
 		} else {
 			const date = new Date(timestamp);
 			if ( Utils.isToday(date) ) {
-				text = DEFAULT_DATE_ENTRY;
+				text = this.config['dateEntryLabel'];
 			} else {
 				text = Utils.shortDate(date);
 			}

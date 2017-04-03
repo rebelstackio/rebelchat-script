@@ -13,5 +13,6 @@ export default {
 	inputChatColor: 'white',
 	inputChatBorderColor: '#f6ebeb',
 	audioNotification: true,
-	changePageTitle: true
+	changePageTitle: true,
+	dateEntryLabel: 'Today'
 };
