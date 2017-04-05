@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import config from '../config';
 
-firebase.initializeApp(config.fbConfig);
+firebase.initializeApp(config.MESSAGE_DB);
 
 const database = firebase.database();
 
