@@ -182,8 +182,8 @@ export default class RebelModal {
 
 		//SEND HISTORY TO EMAIL
 		const historyDiv = document.createElement('div');
-		const historyTitle = this.buildBlockTitle('History');
-		this.modalBody.appendChild(historyTitle);
+	/* 	const historyTitle = this.buildBlockTitle('History');
+		this.modalBody.appendChild(historyTitle); */
 
 		const inputEmail = document.createElement('input');
 		inputEmail.setAttribute(
@@ -195,18 +195,18 @@ export default class RebelModal {
 		inputEmail.setAttribute('placeholder', 'Email');
 
 
-		const emailButton = document.createElement('button');
+		/* const emailButton = document.createElement('button');
 		emailButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
 		const buttonText = document.createTextNode('Send History');
 		emailButton.appendChild(buttonText);
 
 		historyDiv.appendChild(inputEmail);
 		historyDiv.appendChild(emailButton);
-		this.modalBody.appendChild(historyDiv);
+		this.modalBody.appendChild(historyDiv); */
 
 		//AVATAR SELECTION
-		const avatarTitle = this.buildBlockTitle('Avatars');
-		this.modalBody.appendChild(avatarTitle);
+		/* const avatarTitle = this.buildBlockTitle('Avatars');
+		this.modalBody.appendChild(avatarTitle); */
 	}
 
 	/**

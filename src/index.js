@@ -6,15 +6,15 @@ import Modal from './modal';
 import CONFIG from './defaultProps';
 import User from './models/user';
 
-const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/avatars%2Fman2.svg?alt=media&token=ca8142b7-1e09-4d7c-bc5d-74cfcca14fd4';
+const AVATAR_CLIENT_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/avatars%2Fman1.svg?alt=media&token=0b218bc7-e7fb-4b88-87b9-56a41dfaa0fa';
 
-const AVATAR_SERVER_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Foperator.svg?alt=media&token=41ea5597-63a4-40b2-9bd9-875e55433df1';
+const AVATAR_SERVER_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/avatars%2Foperator.svg?alt=media&token=41929fee-6acb-4198-a36b-ee4a6836cc66';
 
-const SEND_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Fic_send_white_24px.svg?alt=media&token=2e8f2366-76f8-4033-bb46-f6eb07d0a064';
+const SEND_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/assets%2Fimg%2Fic_send_white_24px.svg?alt=media&token=737564ef-ca2d-408e-993c-052bb37bb435';
 
-const CONFIG_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Fgear.png?alt=media&token=35b8e227-0e9c-4bfa-880c-ae203e74d8c3';
+const CONFIG_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/assets%2Fimg%2Fgear.png?alt=media&token=b1457888-c5a9-42d4-a4e0-d0c514e50950';
 
-const NEW_MESSAGE_SOUND = 'https://firebasestorage.googleapis.com/v0/b/rebelstackchat.appspot.com/o/assets%2Faudio%2Fyour-turn.mp3?alt=media&token=4b4a48ad-1a7e-487c-b394-2f86edfbbe17';
+const NEW_MESSAGE_SOUND = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/assets%2Faudio%2Fyour-turn.mp3?alt=media&token=d511dbd6-98da-4d47-a6c0-f7c75b2b3327';
 
 const TRUNCATED_LENGTH = 40;
 
