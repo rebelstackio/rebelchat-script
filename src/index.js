@@ -35,6 +35,7 @@ class RebelChat {
 			this.newMessagesCount = 0;
 			this.init();
 		}).catch ( error =>{
+			// TODO: ADD EN ERROR RO NOTIFY THE USER( DEVELOPER )
 			console.log('--->', error);
 		});
 	}
