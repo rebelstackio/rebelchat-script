@@ -158,7 +158,7 @@
   .gear-rotate::after {
       width: 6px;
       height: 6px;
-      background: #bf4d28;
+      background: ___BGCOLOR___;
       position: absolute;
       content:"";
       top: 4.3px;

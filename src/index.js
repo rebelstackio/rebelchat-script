@@ -93,11 +93,12 @@ class RebelChat {
 		}
 
 		const iconsStyle = document.createElement('style');
+		let _icons = icons.replace(/___BGCOLOR___/g, this.config['bgColor']);
 		iconsStyle.type = 'text/css';
 		if (iconsStyle.styleSheet){
-			iconsStyle.styleSheet.cssText = icons;
+			iconsStyle.styleSheet.cssText = _icons;
 		} else {
-			iconsStyle.appendChild(document.createTextNode(icons));
+			iconsStyle.appendChild(document.createTextNode(_icons));
 		}
 
 		head.appendChild(style);
