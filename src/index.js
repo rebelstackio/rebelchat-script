@@ -2,6 +2,7 @@ import FirebaseInstance from './firebase';
 import Utils from './util';
 import css from './assets/css/__STYLE__';
 import animate from './assets/css/animate.min.css';
+import icons from './assets/css/icons.css';
 import Modal from './modal';
 import CONFIG from './defaultProps';
 import User from './models/user';
@@ -91,8 +92,18 @@ class RebelChat {
 			animateStyle.appendChild(document.createTextNode(animate));
 		}
 
+		const iconsStyle = document.createElement('style');
+		let _icons = icons.replace(/___BGCOLOR___/g, this.config['bgColor']);
+		iconsStyle.type = 'text/css';
+		if (iconsStyle.styleSheet){
+			iconsStyle.styleSheet.cssText = _icons;
+		} else {
+			iconsStyle.appendChild(document.createTextNode(_icons));
+		}
+
 		head.appendChild(style);
 		head.appendChild(animateStyle);
+		head.appendChild(iconsStyle);
 	}
 
 	/**
@@ -208,11 +219,9 @@ class RebelChat {
 			modal.show();
 		});
 
-		const configImg = document.createElement('img');
-		configImg.setAttribute('class', 'rebelchat-img');
+		const configImg = document.createElement('div');
+		configImg.setAttribute('class', 'gear-rotate');
 		configImg.setAttribute('alt', 'Chat Settings');
-		configImg.setAttribute('width', '15px');
-		configImg.setAttribute('height', '15px');
 		configImg.setAttribute(
 			'src',
 			CONFIG_BUTTON_URL
@@ -587,14 +596,14 @@ class RebelChat {
 		const link = document.createElement('a')
 		link.setAttribute('class', 'rebelchat-send-button')
 
-		var image = document.createElement('img');
-		image.setAttribute('class',"rebelchat-img" );
-		image.setAttribute('style',"padding-top: 10px;" );
-		image.setAttribute('src', SEND_BUTTON_URL);
-		image.setAttribute('alt',"Send");
-		image.setAttribute('title',"Send");
+		var sendIcon = document.createElement('div');
+		sendIcon.setAttribute('class',"circle active" );
+		//image.setAttribute('src', SEND_BUTTON_URL);
+		sendIcon.setAttribute('alt',"Send");
+		sendIcon.setAttribute('title',"Send");
+		sendIcon.innerHTML = '<span class="burger triangle"></span>';
 
-		link.appendChild(image);
+		link.appendChild(sendIcon);
 
 		group.appendChild(message);
 		group.appendChild(highlight);
