@@ -119,18 +119,18 @@
 .circle.active .burger.triangle:after,
 .circle:hover .burger.triangle:after {
     bottom: 6px;
-    -moz-transform: translateX(1em) rotate(60deg);
-    -ms-transform: translateX(1em) rotate(60deg);
-    -webkit-transform: translateX(1em) rotate(60deg);
+    -moz-transform: translateX(4px) rotate(20deg);
+    -ms-transform: translateX(4px) rotate(20deg);
+    -webkit-transform: translateX(4px) rotate(20deg);
     transform: translateX(4px) rotate(20deg);
 }
 
 .circle.active .burger.triangle:before,
 .circle:hover .burger.triangle:before {
     top: 11.5px;
-    -moz-transform: translateX(-1em) rotate(-60deg);
-    -ms-transform: translateX(-1em) rotate(-60deg);
-    -webkit-transform: translateX(-1em) rotate(-60deg);
+    -moz-transform: translateX(4px) rotate(-20deg);
+    -ms-transform: translateX(4px) rotate(-20deg);
+    -webkit-transform: translateX(4px) rotate(-20deg);
     transform: translateX(4px) rotate(-20deg);
 }
 
