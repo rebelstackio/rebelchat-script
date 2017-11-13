@@ -28,7 +28,7 @@ const config = {
 	module:{
 		loaders:[
 			{
-				test: /src\/index\.js$/,
+				test: /index\.js$/,
 				loader: 'webpack-replace',
 				query: {
 					search: '__STYLE__',
