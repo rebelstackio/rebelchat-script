@@ -48,23 +48,20 @@ div.rebelchat-hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px soli
 .rebelchat-modal.rebelchat-fade .rebelchat-modal-dialog{-webkit-transform:translate(0, -25%);-ms-transform:translate(0, -25%);-o-transform:translate(0, -25%);transform:translate(0, -25%);-webkit-transition:-webkit-transform 0.3s ease-out;-o-transition:-o-transform 0.3s ease-out;transition:transform 0.3s ease-out;}
 .rebelchat-modal.rebelchat-in .rebelchat-modal-dialog{-webkit-transform:translate(0, 0);-ms-transform:translate(0, 0);-o-transform:translate(0, 0);transform:translate(0, 0);}
 .rebelchat-modal-dialog{position:relative;width:auto;margin:10px;}
-.rebelchat-modal-content{position:relative;background-color:#ffffff;border:1px solid #999999;border:1px solid rgba(0, 0, 0, 0.2);border-radius:6px;-webkit-box-shadow:0 3px 9px rgba(0, 0, 0, 0.5);box-shadow:0 3px 9px rgba(0, 0, 0, 0.5);-webkit-background-clip:padding-box;background-clip:padding-box;outline:0;}
+.rebelchat-modal-content{position:relative;background-color:___BGCOLOR___;border:1px solid #999999;border:1px solid rgba(0, 0, 0, 0.2);border-radius:0;-webkit-box-shadow:0 3px 9px rgba(0, 0, 0, 0.5);box-shadow:0 3px 9px rgba(0, 0, 0, 0.5);-webkit-background-clip:padding-box;background-clip:padding-box;outline:0;font-family:monospace}
 .rebelchat-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000000;}
 .rebelchat-modal-backdrop.rebelchat-fade{opacity:0;filter:alpha(opacity=0);}
 .rebelchat-modal-backdrop.rebelchat-in{opacity:0.5;filter:alpha(opacity=50);}
-.rebelchat-modal-header{padding:15px;border-bottom:1px solid #e5e5e5;}
+.rebelchat-modal-header{padding:15px;border-bottom:1px solid rgba(255,255,255,0.6);}
 .rebelchat-modal-header .rebelchat-modal-close{margin-top:-2px;-webkit-appearance:none;padding:0;cursor:pointer;background:0 0;border:0;float:right;}
-.rebelchat-modal-title{margin:0;line-height:1.42857143;text-align:center;}
+.rebelchat-modal-title{margin:0;line-height:1.42857143;text-align:center;font-size:20px;color:rgba(255,255,255,0.8)}
 .rebelchat-modal-body{position:relative;padding:15px;}
-.rebelchat-modal-footer{padding:15px;text-align:right;border-top:1px solid #e5e5e5;}
+.rebelchat-modal-footer{padding:15px;text-align:right;border-top:1px solid rgba(255,255,255,0.6);}
 .rebelchat-btn.rebelchat-btn-lg{padding:10px;letter-spacing:2px;font-size:17px;width:45%;margin:auto;display:block;font-family:monospace}
 @media (min-width: 768px){
-.rebelchat-modal-dialog{width:600px;margin:30px auto;}
+.rebelchat-modal-dialog{width:400px;margin:30px auto;}
 .rebelchat-modal-content{-webkit-box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);box-shadow:0 5px 15px rgba(0, 0, 0, 0.5);}
 .modal-sm{width: 300px;}
-}
-@media (max-width: 768px){
-.rebelchat-btn.rebelchat-btn-lg{width:80%;}
 }
 @media (min-width: 992px) {
 .modal-lg{width: 900px;}
@@ -90,6 +87,121 @@ div.rebelchat-hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px soli
 .rebelchat-form-control:-webkit-autofill,.rebelchat-form-control:-webkit-autofill:hover,.rebelchat-form-control:-webkit-autofill:focus{-webkit-text-fill-color:rgba(255,255,255,0.8)!important;-webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.15) inset;box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.15) inset;transition: background-color 5000s ease-in-out 0s;background-color:rgba(0, 0, 0, 0.15)}
 textarea.rebelchat-form-control{height:auto;}
 .rebelchat-btn{display:inline-block;margin-bottom:0;font-weight:normal;text-align:center;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;background-image:none;border:1px solid transparent;white-space:nowrap;padding:6px 12px;font-size:14px;line-height:1.42857143;border-radius:0px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+.rebelchat-modal-content .exp {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px
+}
+
+.rebelchat-modal-content .exp .checkbox {
+    display: block;
+    width: 262px;
+    margin: auto;
+    height: 100%;
+    text-align: left;
+}
+
+.rebelchat-modal-content label {
+    display: inline-block;
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    position: relative;
+    font-size: 15px;
+    width: 262px
+}
+@media (max-width: 768px){
+.rebelchat-btn.rebelchat-btn-lg{width:80%;}
+}
+.rebelchat-modal-content label span {
+    display: inline-block;
+    position: relative;
+    background-color: transparent;
+    width: 25px;
+    height: 25px;
+    transform-origin: center;
+    border: 2px solid rgba(255,255,255,0.8);
+    border-radius: 50%;
+    vertical-align: -6px;
+    margin-right: 10px;
+    transition: background-color 150ms 200ms, transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);
+}
+
+.rebelchat-modal-content label span:before {
+    content: "";
+    width: 0px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.8);
+    position: absolute;
+    transform: rotate(45deg);
+    top: 13px;
+    left: 9px;
+    transition: width 50ms ease 50ms;
+    transform-origin: 0% 0%;
+}
+
+.rebelchat-modal-content label span:after {
+    content: "";
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.8);
+    position: absolute;
+    transform: rotate(305deg);
+    top: 16px;
+    left: 10px;
+    transition: width 50ms ease;
+    transform-origin: 0% 0%;
+}
+
+.rebelchat-modal-content label:hover span:before {
+    width: 5px;
+    transition: width 100ms ease;
+}
+
+.rebelchat-modal-content label:hover span:after {
+    width: 10px;
+    transition: width 150ms ease 100ms;
+}
+
+.rebelchat-modal-content input[type="checkbox"] {
+    display: none;
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label span {
+    background-color: rgba(255,255,255,0.8);
+    transform: scale(1.25);
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label span:after {
+    width: 10px;
+    background: ___BGCOLOR___;
+    transition: width 150ms ease 100ms;
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label span:before {
+    width: 5px;
+    background: ___BGCOLOR___;
+    transition: width 150ms ease 100ms;
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label:hover span {
+    background-color: rgba(255,255,255,0.8);
+    transform: scale(1.25);
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label:hover span:after {
+    width: 10px;
+    background: ___BGCOLOR___;
+    transition: width 150ms ease 100ms;
+}
+
+.rebelchat-modal-content input[type="checkbox"]:checked + label:hover span:before {
+    width: 5px;
+    background: ___BGCOLOR___;
+    transition: width 150ms ease 100ms;
+}
 /*! CSS Used keyframes */
 @-webkit-keyframes inputHighlighter{from{background:__INPUTCHATCOLOR__;}to{width:0;background:transparent;}}
 @-moz-keyframes inputHighlighter{from{background:__INPUTCHATCOLOR__;}to{width:0;background:transparent;}}
