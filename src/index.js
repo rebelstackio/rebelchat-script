@@ -661,7 +661,7 @@ class RebelChat {
 		input.setAttribute('class', 'rebelchat rebelchat-form-control');
 		input.setAttribute('id', Utils.createUniqueIdSelector('rebel-name'));
 		input.setAttribute('name', 'name');
-		input.setAttribute('placeholder', 'Name');
+		input.setAttribute('placeholder', 'NAME');
 		input.setAttribute('required', 'required');
 
 		//EMAIL
@@ -670,7 +670,7 @@ class RebelChat {
 		email.setAttribute('class', 'rebelchat rebelchat-form-control');
 		email.setAttribute('id', Utils.createUniqueIdSelector('rebel-email'));
 		email.setAttribute('name', 'email');
-		email.setAttribute('placeholder', 'Email');
+		email.setAttribute('placeholder', 'E-MAIL');
 		email.setAttribute('required', 'required');
 
 		//MESSAGE
@@ -678,7 +678,7 @@ class RebelChat {
 		message.setAttribute('class', 'rebelchat rebelchat-form-control');
 		message.setAttribute('id', Utils.createUniqueIdSelector('rebel-message'));
 		message.setAttribute('name', 'message');
-		message.setAttribute('placeholder', 'Message');
+		message.setAttribute('placeholder', 'MESSAGE');
 		message.setAttribute('rows', '10');
 		message.setAttribute('required', 'required');
 

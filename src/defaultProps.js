@@ -1,6 +1,6 @@
 export default {
 	el: 'rebelchat',
-	contactLabel: 'Send Message',
+	contactLabel: 'SEND MESSAGE',
 	chatInputPlaceholder: 'Enter your message',
 	serverContactLabel: 'RebelStack\'s Team',
 	clientContactLabel: 'You',
