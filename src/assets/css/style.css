@@ -2,7 +2,7 @@
 .rebelchat-btn{color:white;}
 .rebelchat-container{font-size:14px;background-color:___BGCOLOR___;}
 .rebelchat-nano{position:relative;width:100%;height:280px;overflow:hidden;}
-.rebelchat-nano > .rebelchat-nano-content{position:absolute;overflow:scroll;overflow-x:hidden;top:0;right:0;bottom:0;left:0;right:-17px;}
+.rebelchat-nano > .rebelchat-nano-content{outline:0;position:absolute;overflow:scroll;overflow-x:hidden;top:0;right:0;bottom:0;left:0;right:-17px;}
 .rebelchat-pad-all{padding:15px;}
 li.rebelchat-mar-btm{margin-bottom:15px!important;}
 .rebelchat-media-block .rebelchat-media-left{display:block;float:left;padding-right:0px;}

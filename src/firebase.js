@@ -93,7 +93,21 @@ export default class FirebaseInstance {
 		return firebase.database().ref().update(updates);
 	}
 
+	static setChatSettings( settings ) {
+		var path = '/notifications/' + REBELCHAT_KEY + '/',
+			newSettings = {
+				audioNotifications: settings.audio,
+				webNotifications: settings.web
+			};
+		return database.ref(path).set(newSettings);
+	}
 
+	static getChatSettings( cb ) {
+		var path = '/notifications/' + REBELCHAT_KEY + '/';
+		return database.ref(path).on('value',function(data){
+			cb(data.val());
+		});
+	}
 	/**
 	 * newServeMessage - new message from server
 	 *

@@ -214,6 +214,12 @@ class RebelChat {
 		config.setAttribute('href', '#');
 		config.setAttribute('title', 'Chat Settings');
 		const modal = new Modal('settings', this.config);
+		FirebaseInstance.getChatSettings(function(data){
+			if(data){
+				modal.userSettings['audioNotification'] = data.audioNotifications;
+				modal.userSettings['webNotification'] = data.webNotifications;
+			}
+		});
 		config.addEventListener('click', (event) => {
 			modal.buildChatSettingsModal('CHAT SETTINGS', this.config['el']);
 			modal.show();

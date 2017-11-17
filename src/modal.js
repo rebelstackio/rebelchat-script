@@ -17,6 +17,7 @@
 //		 </div>
 // </div>
 import Utils from './util';
+import FirebaseInstance from './firebase';
 
 export default class RebelModal {
 
@@ -100,7 +101,19 @@ export default class RebelModal {
 		footerButton.appendChild(buttonText);
 		modalFooter.appendChild(footerButton);
 
-		footerButton.addEventListener('click', this.hide.bind(this));
+		var that = this;
+		footerButton.addEventListener('click', function(){
+			var settings = {
+				audio: document.getElementById("rebelchat-audio").checked? 1:0,
+				web: document.getElementById("rebelchat-webNoti").checked? 1:0
+			};
+			FirebaseInstance.setChatSettings( settings ).then(snap => {
+				that.hide();
+			}).catch(error =>{
+				//TODO HANDLE ERROR WHEN THERE IS AN ERROR TRYING TO GET THE MESSAGES
+				console.log(error);
+			});
+		});
 
 
 		modalContent.appendChild(modalHeader);
@@ -149,31 +162,18 @@ export default class RebelModal {
 		const soundsDiv = document.createElement('div');
 		soundsDiv.setAttribute('class', /*'rebelchat-checkbox'*/'exp');
 		soundsDiv.innerHTML = `<div class="checkbox"><form><div>
-			 <input type="checkbox" id="check" name="check" value="" ${this.userSettings['audioNotification'] ? 'checked':''}/>
-			 <label for="check">
+			 <input type="checkbox" id="rebelchat-audio" name="check" value="" ${this.userSettings['audioNotification'] ? 'checked':''}/>
+			 <label for="rebelchat-audio">
 			   <span></span>Enable sounds notifications
 			 </label></div></form></div>`;
-//		const soundsLabel = document.createElement('label');
-//		soundsDiv.setAttribute('class', 'rebelchat-checkbox');
-//		const soundsCheckbox = document.createElement('input');
-//		soundsCheckbox.setAttribute('type', 'checkbox')
-//		const textSound = document.createTextNode('Enable sounds notifications');
-
-		if ( this.userSettings['audioNotification'] ) {
-			//soundsCheckbox.setAttribute('checked', true);
-		}
-
-//		soundsLabel.appendChild(soundsCheckbox);
-//		soundsLabel.appendChild(textSound);
-//		soundsDiv.appendChild(soundsLabel);
 		this.modalBody.appendChild(soundsDiv);
 
 		//ENABLE WEB CHECKBOX
 		const webNotificationDiv = document.createElement('div');
 		webNotificationDiv.setAttribute('class', 'exp');
 		webNotificationDiv.innerHTML = `<div class="checkbox"><form><div>
-		<input type="checkbox" id="check1" name="check1" value="" ${this.userSettings['webNotification'] ? 'checked':''}/>
-		<label for="check1">
+		<input type="checkbox" id="rebelchat-webNoti" name="check1" value="" ${this.userSettings['webNotification'] ? 'checked':''}/>
+		<label for="rebelchat-webNoti">
 		  <span></span>Enable web notifications
 		</label></div></form></div>`;
 		this.modalBody.appendChild(webNotificationDiv);
