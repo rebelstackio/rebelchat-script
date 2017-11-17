@@ -7,7 +7,7 @@
 li.rebelchat-mar-btm{margin-bottom:15px!important;}
 .rebelchat-media-block .rebelchat-media-left{display:block;float:left;padding-right:0px;}
 .rebelchat-img-sm{width:46px;height:46px;}
-img.rebelchat-img{background-color:transparent;box-shadow:none;border:none;-webkit-box-shadow:none;}
+img.rebelchat-img{background-color:transparent;box-shadow:none;border:none;-webkit-box-shadow:none;border-radius:50%}
 .rebelchat-media-block .rebelchat-media-body{display:block;overflow:hidden;width:auto;}
 .rebelchat-pad-hor{padding-left:15px;padding-right:15px;}
 .rebelchat-speech{position:relative;background:__MSGBOXCOLOR__;color:__MSGCOLOR__;border-radius:0;padding:12px 20px;border-radius:15px;padding-left:10px;padding-right:10px;}

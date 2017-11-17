@@ -348,7 +348,7 @@ class RebelChat {
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
-					AVATAR_SERVER_URL
+					User.getAvatar()//AVATAR_SERVER_URL
 				);
 
 				const messageTextContainer = document.createElement('div');
@@ -495,7 +495,7 @@ class RebelChat {
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
-				AVATAR_CLIENT_URL
+				User.getAvatar()//AVATAR_CLIENT_URL
 			);
 
 			const messageTextContainer = document.createElement('div');

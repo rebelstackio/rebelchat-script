@@ -59,7 +59,7 @@ export default class FirebaseInstance {
 		};
 
 		updates['/clients/' + REBELCHAT_KEY] = newClient;
-
+		localStorage.setItem('USER_NAME',user.name);//save client name for later
 		return database.ref().update(updates);
 	}
 
