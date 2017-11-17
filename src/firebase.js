@@ -59,7 +59,7 @@ export default class FirebaseInstance {
 		};
 
 		updates['/clients/' + REBELCHAT_KEY] = newClient;
-
+		localStorage.setItem('USER_NAME',user.name);//save client name for later
 		return database.ref().update(updates);
 	}
 
@@ -93,7 +93,21 @@ export default class FirebaseInstance {
 		return firebase.database().ref().update(updates);
 	}
 
+	static setChatSettings( settings ) {
+		var path = '/notifications/' + REBELCHAT_KEY + '/',
+			newSettings = {
+				audioNotifications: settings.audio,
+				webNotifications: settings.web
+			};
+		return database.ref(path).set(newSettings);
+	}
 
+	static getChatSettings( cb ) {
+		var path = '/notifications/' + REBELCHAT_KEY + '/';
+		return database.ref(path).on('value',function(data){
+			cb(data.val());
+		});
+	}
 	/**
 	 * newServeMessage - new message from server
 	 *

@@ -214,6 +214,12 @@ class RebelChat {
 		config.setAttribute('href', '#');
 		config.setAttribute('title', 'Chat Settings');
 		const modal = new Modal('settings', this.config);
+		FirebaseInstance.getChatSettings(function(data){
+			if(data){
+				modal.userSettings['audioNotification'] = data.audioNotifications;
+				modal.userSettings['webNotification'] = data.webNotifications;
+			}
+		});
 		config.addEventListener('click', (event) => {
 			modal.buildChatSettingsModal('CHAT SETTINGS', this.config['el']);
 			modal.show();
@@ -342,7 +348,7 @@ class RebelChat {
 				avatar.setAttribute('alt', 'Client');
 				avatar.setAttribute(
 					'src',
-					AVATAR_SERVER_URL
+					User.getAvatar()//AVATAR_SERVER_URL
 				);
 
 				const messageTextContainer = document.createElement('div');
@@ -489,7 +495,7 @@ class RebelChat {
 			avatar.setAttribute('alt', 'Client');
 			avatar.setAttribute(
 				'src',
-				AVATAR_CLIENT_URL
+				User.getAvatar()//AVATAR_CLIENT_URL
 			);
 
 			const messageTextContainer = document.createElement('div');
