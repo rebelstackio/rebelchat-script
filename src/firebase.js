@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import config from '../config';
+import Modal from './modal';
 
 firebase.initializeApp(config.MESSAGE_DB);
 
@@ -64,17 +65,22 @@ export default class FirebaseInstance {
 			console.log(updates);
 			return database.ref().update(updates);
 		};
-
+		const modal = new Modal('recovery', {});
 		return database.ref('/clients').once('value',function(data){
 			var isUsed = false;
 			data.forEach(function(childSnapshot) {
 				var key = childSnapshot.key,
 					childData = childSnapshot.val(),
 					email = childData.email;
-				isUsed = (user.email == email);
+				if(user.email == email){
+					isUsed = true;
+				}
 			});
 			if(isUsed){
-				alert("feature 7 in progress");
+				modal.userSettings['audioNotification'] = 1;
+				modal.userSettings['webNotification'] = 1;
+				modal.buildChatRecoveryModal('SESSION RECOVERY', "chat-cmp-container");
+				modal.show();
 			}else{
 				updClient();
 				success();
