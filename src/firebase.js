@@ -74,7 +74,7 @@ export default class FirebaseInstance {
 				isUsed = (user.email == email);
 			});
 			if(isUsed){
-				alert("useless motherfucker");
+				alert("feature 7 in progress");
 			}else{
 				updClient();
 				success();
