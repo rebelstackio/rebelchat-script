@@ -743,10 +743,16 @@ class RebelChat {
 
 			//SAVE USER INFORMATION
 			this.USER = user;
-			FirebaseInstance.saveClientInfo(user);
-
-			//BUILD CHAT COMPONENT
-			this.buildChatComponent(message);
+			var that = this;
+			FirebaseInstance.saveClientInfo(user, (function(){
+				that.buildChatComponent(message);
+			}), (function(){
+				//display the thing
+			}) ).then(function(){
+				console.log('User information saved');
+			}).catch(function(error){
+				console.error('Error trying to save User\'s info', error);
+			});
 
 			// ASK FOR PERMISSION TO WEB NOTIFICATION
 			// if ( window.Notification ){

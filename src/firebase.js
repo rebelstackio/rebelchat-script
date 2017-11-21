@@ -47,7 +47,7 @@ export default class FirebaseInstance {
 	 * @param  {type} user description
 	 * @return {type}      description
 	 */
-	static saveClientInfo( user ) {
+	static saveClientInfo( user, success, fail ) {
 		let updates = {};
 
 		let newClient = {
@@ -58,10 +58,30 @@ export default class FirebaseInstance {
 			email: user.email
 		};
 
-		updates['/clients/' + REBELCHAT_KEY] = newClient;
-		localStorage.setItem('USER_NAME',user.name);//save client name for later
-		return database.ref().update(updates);
+		var updClient = function(){
+			updates['/clients/' + REBELCHAT_KEY] = newClient;
+			localStorage.setItem('USER_NAME',user.name);//save client name for later
+			console.log(updates);
+			return database.ref().update(updates);
+		};
+
+		return database.ref('/clients').once('value',function(data){
+			var isUsed = false;
+			data.forEach(function(childSnapshot) {
+				var key = childSnapshot.key,
+					childData = childSnapshot.val(),
+					email = childData.email;
+				isUsed = (user.email == email);
+			});
+			if(isUsed){
+				alert("useless motherfucker");
+			}else{
+				updClient();
+				success();
+			}
+		});
 	}
+
 
 	/**
 	 * sendClientMessage - Send the message to the server
