@@ -15,6 +15,8 @@ const HISTORY_MESSAGE_QTY = 10;
 
 let REBELCHAT_KEY = null;
 
+let mainObject = null;
+
 export default class FirebaseInstance {
 
 
@@ -51,6 +53,8 @@ export default class FirebaseInstance {
 	 */
 	static saveClientInfo( user, success, fail ) {
 		let updates = {};
+		var that = this,
+		msg = user.message;
 
 		let newClient = {
 			messages: {},
@@ -97,14 +101,36 @@ export default class FirebaseInstance {
 							//do something
 							database.ref('/code_requests/'+uid).once('value',function(data){
 								var token = data.val().token;
+								block_div.parentNode.removeChild(block_div);
 								if(token == document.getElementById("rebelchat-modal-token").value){
-									block_div.parentNode.removeChild(block_div);
-									token_modal.hide();
 									localStorage.setItem("REBELCHAT_KEY",userKey);
 									localStorage.setItem("USER_NAME",userName);
+									REBELCHAT_KEY = userKey;
+									//push message
+									token_modal.hide();
+									that.sendClientMessage(msg);
+									//load chat
+									that.getMessages().then(snap => {
+										const data = snap.val();
+										if ( data ){
+											that.mainObject.buildPreviousConversation(data);
+										}
+									}).catch(error =>{
+										console.log(error);
+									});
 								}else{
-									//notify user the token is broken
+									//Show token is wrong warning
+									var warning_id = token_modal.modalContainer.id.split("-")[0]+"-rebelchat-token-modal-warning";
+									if(!document.getElementById(warning_id)){
+										var warning = document.createElement("div");
+										warning.innerHTML = "The token you inserted is incorrect";
+										warning.setAttribute("class","rebelchat-token-modal-warning");
+										warning.setAttribute("id",warning_id);
+										token_modal.modalBody.appendChild(warning);
+									}
 								}
+							}).catch(error =>{
+								console.log(error);
 							});
 						});
 						code_modal.show();
