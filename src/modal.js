@@ -126,8 +126,9 @@ export default class RebelModal {
 	 * buildChatRecoveryModal
 	 * @param {string} title Modal title
 	 * @param {DOM} el DOM element
+	 * @param {onAccept} callback executed whe user clicks "Yes"
 	*/
-	buildChatRecoveryModal( title, el ){
+	buildChatRecoveryModal( title, el, onAccept ){
 		if(!this.modalContainer){
 			var that = this;
 			this.buildModalStructure(function(modalFooter){
@@ -144,14 +145,15 @@ export default class RebelModal {
 				});
 				yesButton.addEventListener('click',function(){
 					const block_div = document.createElement("div");
-					block_div.setAttribute("id",
-					Utils.createUniqueIdSelector('-rebelchat-block-div'));
+					var block_id = Utils.createUniqueIdSelector('-rebelchat-block-div');
+					block_div.setAttribute("id",block_id);
 					block_div.setAttribute("class","rebelchat-block-div");
 					block_div.addEventListener("click",function(e){
 						e.stopPropagation();
 					});
 					document.getElementsByTagName('body')[0].appendChild(block_div);
 					that.hide();
+					onAccept(block_div,that);
 				});
 				modalFooter.appendChild(yesButton);
 				modalFooter.appendChild(noButton);
@@ -169,6 +171,61 @@ export default class RebelModal {
 		question.setAttribute("class","rebelchat-label-recovery");
 		question.innerHTML = "This email has already been used, would you like to recover this session?";
 		this.modalBody.appendChild(question);
+	}
+
+	/**
+	 * buildInsertTokenModal
+	 * @param {string} title Modal title
+	 * @param {DOM} el DOM element
+	 * @param {onAccept} callback executed whe user clicks "Yes"
+	*/
+	buildInsertTokenModal( title, el, onAccept ){
+		if(!this.modalContainer){
+			var that = this;
+			this.buildModalStructure(function(modalFooter){
+				const yesButton = document.createElement('button');
+				yesButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
+				const buttonText = document.createTextNode('Access code');
+				yesButton.appendChild(buttonText);
+				const noButton = document.createElement('button');
+				noButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main rebelchat-btn-no');
+				const buttonText2 = document.createTextNode('Cancel');
+				noButton.appendChild(buttonText2);
+				noButton.addEventListener('click',function(){
+					that.hide();
+				});
+				yesButton.addEventListener('click',function(){
+					const block_div = document.createElement("div");
+					var block_id = Utils.createUniqueIdSelector('-rebelchat-block-div');
+					block_div.setAttribute("id",block_id);
+					block_div.setAttribute("class","rebelchat-block-div");
+					block_div.addEventListener("click",function(e){
+						e.stopPropagation();
+					});
+					document.getElementsByTagName('body')[0].appendChild(block_div);
+					//that.hide();
+					onAccept(block_div,that);
+				});
+				modalFooter.appendChild(yesButton);
+				modalFooter.appendChild(noButton);
+			});
+		}
+		const element = document.getElementById(el);
+		this.title.innerText = title;
+		while(this.modalBody.hasChildNodes()){
+			this.modalBody.removeChild(this.modalBody.lastChild);
+		}
+		element.appendChild(this.backdrop);
+		element.appendChild(this.modalContainer);
+
+		const question = document.createElement("div");
+		question.setAttribute("class","rebelchat-label-recovery");
+		question.innerHTML = "A secret code has been sent to your email, insert the code in the textbox below";
+		this.modalBody.appendChild(question);
+
+		const tokenInput = document.createElement("input");
+		tokenInput.setAttribute("class","rebelchat rebelchat-form-control");
+		this.modalBody.appendChild(tokenInput);
 	}
 
 	/**

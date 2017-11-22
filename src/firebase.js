@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import config from '../config';
 import Modal from './modal';
+import { setTimeout } from 'timers';
 
 firebase.initializeApp(config.MESSAGE_DB);
 
@@ -77,9 +78,21 @@ export default class FirebaseInstance {
 				}
 			});
 			if(isUsed){
-				modal.userSettings['audioNotification'] = 1;
-				modal.userSettings['webNotification'] = 1;
-				modal.buildChatRecoveryModal('SESSION RECOVERY', "chat-cmp-container");
+				modal.buildChatRecoveryModal('SESSION RECOVERY', "chat-cmp-container", function(block_div,recovery_modal){
+					//on accept
+					database.ref('/code_requests').push({
+						timestamp: firebase.database.ServerValue.TIMESTAMP,
+						email: user.email,
+						key_used: REBELCHAT_KEY
+					}).then(function(){
+						const code_modal = new Modal("code-modal",{});
+						code_modal.buildInsertTokenModal('INSERT EMAIL CODE',"chat-cmp-container",function(block_div,recovery_modal){
+							//do something
+						});
+						code_modal.show();
+						block_div.parentNode.removeChild(block_div);
+					});
+				});
 				modal.show();
 			}else{
 				updClient();
