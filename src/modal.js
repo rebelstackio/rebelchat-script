@@ -225,6 +225,7 @@ export default class RebelModal {
 
 		const tokenInput = document.createElement("input");
 		tokenInput.setAttribute("class","rebelchat rebelchat-form-control");
+		tokenInput.setAttribute("id","rebelchat-modal-token");
 		this.modalBody.appendChild(tokenInput);
 	}
 
