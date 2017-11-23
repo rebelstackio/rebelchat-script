@@ -1,5 +1,7 @@
 import firebase from 'firebase';
 import config from '../config';
+import Modal from './modal';
+import { setTimeout } from 'timers';
 
 firebase.initializeApp(config.MESSAGE_DB);
 
@@ -12,6 +14,8 @@ const CLIENT_SOURCE = 'CLIENT';
 const HISTORY_MESSAGE_QTY = 10;
 
 let REBELCHAT_KEY = null;
+
+let mainObject = null;
 
 export default class FirebaseInstance {
 
@@ -47,8 +51,10 @@ export default class FirebaseInstance {
 	 * @param  {type} user description
 	 * @return {type}      description
 	 */
-	static saveClientInfo( user ) {
+	static saveClientInfo( user, success, fail ) {
 		let updates = {};
+		var that = this,
+		msg = user.message;
 
 		let newClient = {
 			messages: {},
@@ -58,10 +64,87 @@ export default class FirebaseInstance {
 			email: user.email
 		};
 
-		updates['/clients/' + REBELCHAT_KEY] = newClient;
-		localStorage.setItem('USER_NAME',user.name);//save client name for later
-		return database.ref().update(updates);
+		var updClient = function(){
+			updates['/clients/' + REBELCHAT_KEY] = newClient;
+			localStorage.setItem('USER_NAME',user.name);//save client name for later
+			console.log(updates);
+			return database.ref().update(updates);
+		};
+		const modal = new Modal('recovery', {});
+		return database.ref('/clients').once('value',function(data){
+			var isUsed = false,
+				userKey = false,
+				userName = false;
+			data.forEach(function(childSnapshot) {
+				var key = childSnapshot.key,
+					childData = childSnapshot.val(),
+					email = childData.email,
+					usrNAme = childData.name;
+				if(user.email == email){
+					isUsed = true;
+					userKey = key;
+					userName = usrNAme;
+				}
+			});
+			if(isUsed){
+				modal.buildChatRecoveryModal('SESSION RECOVERY', "chat-cmp-container", function(block_div,recovery_modal){
+					//on accept
+					var newRef = database.ref('/code_requests').push({
+						timestamp: firebase.database.ServerValue.TIMESTAMP,
+						email: user.email,
+						key_used: REBELCHAT_KEY
+					});
+					newRef.then(function(data){
+						var uid = data.key;console.log(uid);
+						const code_modal = new Modal("code-modal",{});
+						code_modal.buildInsertTokenModal('INSERT EMAIL CODE',"chat-cmp-container",function(block_div,token_modal){
+							//do something
+							database.ref('/code_requests/'+uid).once('value',function(data){
+								var token = data.val().token;
+								block_div.parentNode.removeChild(block_div);
+								if(token == document.getElementById("rebelchat-modal-token").value){
+									localStorage.setItem("REBELCHAT_KEY",userKey);
+									localStorage.setItem("USER_NAME",userName);
+									REBELCHAT_KEY = userKey;
+									//push message
+									token_modal.hide();
+									that.sendClientMessage(msg);
+									//load chat
+									that.getMessages().then(snap => {
+										const data = snap.val();
+										if ( data ){
+											that.mainObject.buildPreviousConversation(data);
+										}
+									}).catch(error =>{
+										console.log(error);
+									});
+								}else{
+									//Show token is wrong warning
+									var warning_id = token_modal.modalContainer.id.split("-")[0]+"-rebelchat-token-modal-warning";
+									if(!document.getElementById(warning_id)){
+										var warning = document.createElement("div");
+										warning.innerHTML = "The token you inserted is incorrect";
+										warning.setAttribute("class","rebelchat-token-modal-warning");
+										warning.setAttribute("id",warning_id);
+										token_modal.modalBody.appendChild(warning);
+									}
+								}
+							}).catch(error =>{
+								console.log(error);
+							});
+						});
+						code_modal.show();
+						block_div.parentNode.removeChild(block_div);
+					});
+				});
+				modal.show();
+			}else{
+				updClient();
+				success();
+			}
+		});
 	}
+
 
 	/**
 	 * sendClientMessage - Send the message to the server

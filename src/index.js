@@ -30,6 +30,7 @@ class RebelChat {
 			this.config = Object.assign(CONFIG, _config, userSettings);
 			this.loadStyles();
 			FirebaseInstance.init();
+			FirebaseInstance.mainObject = this;
 			this.newDateEntryFlag = false;
 			this.newMessagesFlag = false;
 			this.pageTitle = document.title;
@@ -738,15 +739,22 @@ class RebelChat {
 
 			const user = {
 				'name': name,
-				'email': email
+				'email': email,
+				'message': message
 			};
 
 			//SAVE USER INFORMATION
 			this.USER = user;
-			FirebaseInstance.saveClientInfo(user);
-
-			//BUILD CHAT COMPONENT
-			this.buildChatComponent(message);
+			var that = this;
+			FirebaseInstance.saveClientInfo(user, (function(){
+				that.buildChatComponent(message);
+			}), (function(){
+				//display the thing
+			}) ).then(function(){
+				console.log('User information saved');
+			}).catch(function(error){
+				console.error('Error trying to save User\'s info', error);
+			});
 
 			// ASK FOR PERMISSION TO WEB NOTIFICATION
 			// if ( window.Notification ){

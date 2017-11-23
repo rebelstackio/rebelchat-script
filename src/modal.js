@@ -33,7 +33,7 @@ export default class RebelModal {
  	/**
  	 * buildModalStructure - Build the basic structure for a modal
  	 */
- 	buildModalStructure() {
+ 	buildModalStructure(cb) {
 		const backdrop = document.createElement('div');
 		backdrop.setAttribute('class', 'rebelchat-modal-backdrop rebelchat-fade rebelchat-in rebelchat-hide');
 		backdrop.setAttribute('id',
@@ -95,26 +95,8 @@ export default class RebelModal {
 		modalFooter.setAttribute('id',
 			Utils.createUniqueIdSelector(this.id + 'rebelchat-modal-footer')
 		);
-		const footerButton = document.createElement('button');
-		footerButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
-		const buttonText = document.createTextNode('Save');
-		footerButton.appendChild(buttonText);
-		modalFooter.appendChild(footerButton);
 
-		var that = this;
-		footerButton.addEventListener('click', function(){
-			var settings = {
-				audio: document.getElementById("rebelchat-audio").checked? 1:0,
-				web: document.getElementById("rebelchat-webNoti").checked? 1:0
-			};
-			FirebaseInstance.setChatSettings( settings ).then(snap => {
-				that.hide();
-			}).catch(error =>{
-				//TODO HANDLE ERROR WHEN THERE IS AN ERROR TRYING TO GET THE MESSAGES
-				console.log(error);
-			});
-		});
-
+		cb(modalFooter);
 
 		modalContent.appendChild(modalHeader);
 		modalContent.appendChild(modalBody);
@@ -140,6 +122,112 @@ export default class RebelModal {
 		return notificationTitle;
 	}
 
+	/**
+	 * buildChatRecoveryModal
+	 * @param {string} title Modal title
+	 * @param {DOM} el DOM element
+	 * @param {onAccept} callback executed whe user clicks "Yes"
+	*/
+	buildChatRecoveryModal( title, el, onAccept ){
+		if(!this.modalContainer){
+			var that = this;
+			this.buildModalStructure(function(modalFooter){
+				const yesButton = document.createElement('button');
+				yesButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
+				const buttonText = document.createTextNode('Yes, send recovery code');
+				yesButton.appendChild(buttonText);
+				const noButton = document.createElement('button');
+				noButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main rebelchat-btn-no');
+				const buttonText2 = document.createTextNode('No');
+				noButton.appendChild(buttonText2);
+				noButton.addEventListener('click',function(){
+					that.hide();
+				});
+				yesButton.addEventListener('click',function(){
+					const block_div = document.createElement("div");
+					var block_id = Utils.createUniqueIdSelector('-rebelchat-block-div');
+					block_div.setAttribute("id",block_id);
+					block_div.setAttribute("class","rebelchat-block-div");
+					block_div.addEventListener("click",function(e){
+						e.stopPropagation();
+					});
+					document.getElementsByTagName('body')[0].appendChild(block_div);
+					that.hide();
+					onAccept(block_div,that);
+				});
+				modalFooter.appendChild(yesButton);
+				modalFooter.appendChild(noButton);
+			});
+		}
+		const element = document.getElementById(el);
+		this.title.innerText = title;
+		while(this.modalBody.hasChildNodes()){
+			this.modalBody.removeChild(this.modalBody.lastChild);
+		}
+		element.appendChild(this.backdrop);
+		element.appendChild(this.modalContainer);
+
+		const question = document.createElement("div");
+		question.setAttribute("class","rebelchat-label-recovery");
+		question.innerHTML = "This email has already been used, would you like to recover this session?";
+		this.modalBody.appendChild(question);
+	}
+
+	/**
+	 * buildInsertTokenModal
+	 * @param {string} title Modal title
+	 * @param {DOM} el DOM element
+	 * @param {onAccept} callback executed whe user clicks "Yes"
+	*/
+	buildInsertTokenModal( title, el, onAccept ){
+		if(!this.modalContainer){
+			var that = this;
+			this.buildModalStructure(function(modalFooter){
+				const yesButton = document.createElement('button');
+				yesButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
+				const buttonText = document.createTextNode('Access code');
+				yesButton.appendChild(buttonText);
+				const noButton = document.createElement('button');
+				noButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main rebelchat-btn-no');
+				const buttonText2 = document.createTextNode('Cancel');
+				noButton.appendChild(buttonText2);
+				noButton.addEventListener('click',function(){
+					that.hide();
+				});
+				yesButton.addEventListener('click',function(){
+					const block_div = document.createElement("div");
+					var block_id = Utils.createUniqueIdSelector('-rebelchat-block-div');
+					block_div.setAttribute("id",block_id);
+					block_div.setAttribute("class","rebelchat-block-div");
+					block_div.addEventListener("click",function(e){
+						e.stopPropagation();
+					});
+					document.getElementsByTagName('body')[0].appendChild(block_div);
+					//that.hide();
+					onAccept(block_div,that);
+				});
+				modalFooter.appendChild(yesButton);
+				modalFooter.appendChild(noButton);
+			});
+		}
+		const element = document.getElementById(el);
+		this.title.innerText = title;
+		while(this.modalBody.hasChildNodes()){
+			this.modalBody.removeChild(this.modalBody.lastChild);
+		}
+		element.appendChild(this.backdrop);
+		element.appendChild(this.modalContainer);
+
+		const question = document.createElement("div");
+		question.setAttribute("class","rebelchat-label-recovery");
+		question.innerHTML = "A secret code has been sent to your email, insert the code in the textbox below";
+		this.modalBody.appendChild(question);
+
+		const tokenInput = document.createElement("input");
+		tokenInput.setAttribute("class","rebelchat rebelchat-form-control");
+		tokenInput.setAttribute("id","rebelchat-modal-token");
+		this.modalBody.appendChild(tokenInput);
+	}
 
 	/**
 	 * buildChatSettingsModal - Build the chat settings modal
@@ -149,7 +237,28 @@ export default class RebelModal {
 	 */
 	buildChatSettingsModal( title, el ) {
 		if(!this.modalContainer){
-			this.buildModalStructure();
+			var that = this;
+			var cb = function(modalFooter){
+				const footerButton = document.createElement('button');
+				footerButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
+				const buttonText = document.createTextNode('Save');
+				footerButton.appendChild(buttonText);
+				modalFooter.appendChild(footerButton);
+	
+				footerButton.addEventListener('click', function(){
+					var settings = {
+						audio: document.getElementById("rebelchat-audio").checked? 1:0,
+						web: document.getElementById("rebelchat-webNoti").checked? 1:0
+					};
+					FirebaseInstance.setChatSettings( settings ).then(snap => {
+						that.hide();
+					}).catch(error =>{
+						//TODO HANDLE ERROR WHEN THERE IS AN ERROR TRYING TO GET THE MESSAGES
+						console.log(error);
+					});
+				});
+			};
+			this.buildModalStructure(cb);
 		}
 		const element = document.getElementById(el);
 		this.title.innerText = title;
@@ -160,7 +269,7 @@ export default class RebelModal {
 		element.appendChild(this.modalContainer);
 
 		const soundsDiv = document.createElement('div');
-		soundsDiv.setAttribute('class', /*'rebelchat-checkbox'*/'exp');
+		soundsDiv.setAttribute('class','exp');
 		soundsDiv.innerHTML = `<div class="checkbox"><form><div>
 			 <input type="checkbox" id="rebelchat-audio" name="check" value="" ${this.userSettings['audioNotification'] ? 'checked':''}/>
 			 <label for="rebelchat-audio">
@@ -178,11 +287,6 @@ export default class RebelModal {
 		</label></div></form></div>`;
 		this.modalBody.appendChild(webNotificationDiv);
 
-		//SEND HISTORY TO EMAIL
-		const historyDiv = document.createElement('div');
-	/* 	const historyTitle = this.buildBlockTitle('History');
-		this.modalBody.appendChild(historyTitle); */
-
 		const inputEmail = document.createElement('input');
 		inputEmail.setAttribute(
 			'id',
@@ -191,20 +295,6 @@ export default class RebelModal {
 		inputEmail.setAttribute('class', 'rebelchat-modal-form-control');
 		inputEmail.setAttribute('type', 'email');
 		inputEmail.setAttribute('placeholder', 'Email');
-
-
-		/* const emailButton = document.createElement('button');
-		emailButton.setAttribute('class', 'rebelchat-btn rebelchat-btn-main');
-		const buttonText = document.createTextNode('Send History');
-		emailButton.appendChild(buttonText);
-
-		historyDiv.appendChild(inputEmail);
-		historyDiv.appendChild(emailButton);
-		this.modalBody.appendChild(historyDiv); */
-
-		//AVATAR SELECTION
-		/* const avatarTitle = this.buildBlockTitle('Avatars');
-		this.modalBody.appendChild(avatarTitle); */
 	}
 
 	/**
