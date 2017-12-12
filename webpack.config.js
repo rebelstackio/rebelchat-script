@@ -22,7 +22,7 @@ const config = {
 	devServer:{
 		contentBase: path.resolve(__dirname, 'public'),
 		host: '0.0.0.0',
-		port: 9000,
+		port: 8000,
 		inline: true
 	},
 	module:{

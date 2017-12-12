@@ -73,6 +73,7 @@ class RebelChat {
 		_css = _css.replace(/__RESPONSEMSGCOLOR__/g, this.config['responseMsgColor']);
 		_css = _css.replace(/__MSGCOLOR__/g, this.config['msgColor']);
 		_css = _css.replace(/__MSGBOXCOLOR__/g, this.config['msgBoxColor']);
+		_css = _css.replace(/__MSGBOXCOLORSRV__/g, this.config['msgBoxColorSrv']);
 		_css = _css.replace(/__INPUTCHATCOLOR__/g, this.config['inputChatColor']);
 		_css = _css.replace(/__INPUTCHATBORDERCOLOR__/g, this.config['inputChatBorderColor']);
 
@@ -347,11 +348,12 @@ class RebelChat {
 				const avatar = document.createElement('img');
 				avatar.setAttribute('class', 'rebelchat-img rebelchat-img-sm');
 				avatar.setAttribute('alt', 'Client');
-				avatar.setAttribute(
-					'src',
-					User.getAvatar()//AVATAR_SERVER_URL
-				);
-
+				User.getAdminAvatar(function(src){
+					avatar.setAttribute(
+						'src',
+						src//AVATAR_SERVER_URL
+					);
+				});
 				const messageTextContainer = document.createElement('div');
 				messageTextContainer.setAttribute('class', 'rebelchat-media-body rebelchat-pad-hor rebelchat-speech-right');
 
@@ -871,24 +873,46 @@ class RebelChat {
 	 * fireNewMessagesActions - Fire actions when a new server's message arrive
 	 */
 	fireNewMessagesActions() {
-
-		//AUDIO NOTIFICACION
-		if ( this.newMessagesFlag && this.config['audioNotification']) {
-			if ( Audio ) {
-				const audio = new Audio([NEW_MESSAGE_SOUND]);
-				if ( audio ) {
-					audio.play();
+		if ( this.newMessagesFlag ) {
+			//AUDIO NOTIFICACION
+			if(this.config['audioNotification']) {
+				if ( Audio ) {
+					const audio = new Audio([NEW_MESSAGE_SOUND]);
+					if ( audio ) {
+						audio.play();
+					}
 				}
 			}
-		}
 
-		//CHANGE HEAD TITLE
-		if ( this.newMessagesFlag ) {
+			//WEB NOTIFICACION
+			if (this.config['webNotification']) {
+				const token = localStorage.getItem("TOKEN");
+				this.sendNotification(token);
+			}
+		
+			//CHANGE HEAD TITLE
 			this.newMessagesCount ++;
 			this.changeHeadTitleByMessages();
 		}
 	}
 
+	sendNotification(token){
+		if(this.config['webNotification'] && 
+		this.config['webNotification'] != 0){
+		var xhttp = new XMLHttpRequest();
+		xhttp.open('POST','https://fcm.googleapis.com/fcm/send',true);
+		xhttp.setRequestHeader("Authorization", `key=AAAAMODu2eQ:APA91bHJ289azvBIqjkxHsM47CBfo4RwqytdCZcgyFdzBCDL37ILofeCU_HAHIIDisy-1qrysYE0HJOrrWbpRjju8oaenx7wGmj_BboyUkI4N7Cmj_XTvKSWCzpO4juTsY_hzrH43R38`);
+		xhttp.setRequestHeader("Content-type", "application/json");
+		xhttp.send(`{
+			"to":"${token}",
+		  "notification": {
+		  "title":"Rebelchat",
+		  "body":"you have new messages",
+		  "icon":"img/logo.png"
+		  }
+		  }`);
+		}
+	}
 
 	/**
 	 * changeHeadTitleByMessages - Change page's title base on the new messages
