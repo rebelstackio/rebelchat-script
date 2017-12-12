@@ -17,7 +17,7 @@ const CONFIG_BUTTON_URL = 'https://firebasestorage.googleapis.com/v0/b/rebelchat
 
 const NEW_MESSAGE_SOUND = 'https://firebasestorage.googleapis.com/v0/b/rebelchat-53a46.appspot.com/o/assets%2Faudio%2Fyour-turn.mp3?alt=media&token=d511dbd6-98da-4d47-a6c0-f7c75b2b3327';
 
-const TRUNCATED_LENGTH = 40;
+const TRUNCATED_LENGTH = 200;
 
 const SEND_MESSAGE_KEY = 13;
 
