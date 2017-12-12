@@ -10,6 +10,7 @@ export default {
 	responseMsgColor:'#a07617',
 	msgColor: '#317787',
 	msgBoxColor: '#b7dcfe',
+	msgBoxColorSrv: '#f5f7e6',
 	inputChatColor: 'white',
 	inputChatBorderColor: '#f6ebeb',
 	changePageTitle: true,

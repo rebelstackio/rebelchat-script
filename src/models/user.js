@@ -35,5 +35,28 @@ export default class User {
 	
 			return dataURI;
 		}
+
+		static getAdminAvatar(cb) {
+			var canvas = document.createElement('canvas'),
+			context, dataURI, size = 46;
+			canvas.width = 46;
+			canvas.height = 46;
+			context = canvas.getContext("2d");
+			var img = new Image();
+			img.src = 'img/logo.png';
+			/*canvas.width = img.width*2;
+			canvas.height = img.height*2;*/
+			context.fillStyle = '#ffffe6';
+			context.fillRect (0, 0, canvas.width, canvas.height);
+			img.onload = function(){
+				context.drawImage(img,3,0,39,41);
+				cb(canvas.toDataURL());
+			};
+			//
+			
+			return dataURI = canvas.toDataURL();
+			canvas  = null;
+			return dataURI;
+		}
 	}
 	

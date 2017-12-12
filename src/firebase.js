@@ -7,6 +7,8 @@ firebase.initializeApp(config.MESSAGE_DB);
 
 const database = firebase.database();
 
+const messaging = firebase.messaging();
+
 const REBELCHAT_CLIENT_KEY_NAME = 'REBELCHAT_KEY';
 
 const CLIENT_SOURCE = 'CLIENT';
@@ -42,6 +44,14 @@ export default class FirebaseInstance {
 				throw new Error('Your browser doesn\'t support local storage');
 			}
 		}
+		/*Get authorization for sending web notifications.*/
+		messaging.requestPermission().then(function(){
+			return  messaging.getToken();
+		}).then(function(token){
+			localStorage.setItem("TOKEN",token);
+		}).catch(function(err){
+			console.log('You do not have permission for web notifications.');
+		});
 	}
 
 
