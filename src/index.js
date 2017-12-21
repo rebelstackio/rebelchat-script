@@ -115,13 +115,16 @@ class RebelChat {
 	 */
 	init() {
 		//ADD EVENT TO LISTEN NEW MESSAGES INCOMING FROM THE SERVER
+		var that = this;
 		this.serverMessagesEvent();
 		//GET THE PREVIOUS MESSAGES
 		FirebaseInstance.getMessages().then(snap => {
 			this.newMessagesFlag = true;
 			const data = snap.val();
 			if ( data ){
+//				that.serverMessagesEvent();
 				this.buildPreviousConversation(data);
+				//Listen for message events
 			} else {
 				this.buildContactForm();
 			}
@@ -223,6 +226,7 @@ class RebelChat {
 			}
 		});
 		config.addEventListener('click', (event) => {
+			event.preventDefault();
 			modal.buildChatSettingsModal('CHAT SETTINGS', this.config['el']);
 			modal.show();
 		});

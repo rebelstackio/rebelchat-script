@@ -32,6 +32,32 @@ export default class FirebaseInstance {
 			console.log('GET REBEL KEY FROM LOCALSTORAGE', REBELCHAT_KEY);
 		}
 
+		/*if ( !REBELCHAT_KEY ) {
+			REBELCHAT_KEY = database.ref().child('clients').push().key;
+			if ( localStorage ) {
+				localStorage.setItem(
+					REBELCHAT_CLIENT_KEY_NAME,
+					REBELCHAT_KEY
+				);
+				console.log('SAVE REBEL KEY IN LOCALSTORAGE',	REBELCHAT_KEY);
+			} else {
+				throw new Error('Your browser doesn\'t support local storage');
+			}
+		}*/
+		/*Get authorization for sending web notifications.*/
+		messaging.requestPermission().then(function(){
+			return  messaging.getToken();
+		}).then(function(token){
+			localStorage.setItem("TOKEN",token);
+		}).catch(function(err){
+			console.log('You do not have permission for web notifications.');
+		});
+	}
+
+	/**
+	 * static - pushes a new client KEY in firebase
+	 */
+	static pushClientKey(){
 		if ( !REBELCHAT_KEY ) {
 			REBELCHAT_KEY = database.ref().child('clients').push().key;
 			if ( localStorage ) {
@@ -44,16 +70,7 @@ export default class FirebaseInstance {
 				throw new Error('Your browser doesn\'t support local storage');
 			}
 		}
-		/*Get authorization for sending web notifications.*/
-		messaging.requestPermission().then(function(){
-			return  messaging.getToken();
-		}).then(function(token){
-			localStorage.setItem("TOKEN",token);
-		}).catch(function(err){
-			console.log('You do not have permission for web notifications.');
-		});
 	}
-
 
 	/**
 	 * static - description
@@ -76,11 +93,11 @@ export default class FirebaseInstance {
 
 		var updClient = function(){
 			updates['/clients/' + REBELCHAT_KEY] = newClient;
-			localStorage.setItem('USER_NAME',user.name);//save client name for later
 			console.log(updates);
 			return database.ref().update(updates);
 		};
 		const modal = new Modal('recovery', {});
+		//Check if the user already exists or not
 		return database.ref('/clients').once('value',function(data){
 			var isUsed = false,
 				userKey = false,
@@ -96,13 +113,14 @@ export default class FirebaseInstance {
 					userName = usrNAme;
 				}
 			});
+			//This means the user already exists
 			if(isUsed){
 				modal.buildChatRecoveryModal('SESSION RECOVERY', "chat-cmp-container", function(block_div,recovery_modal){
-					//on accept
+					//The user accepted to send a recovery code to the stored client's email
 					var newRef = database.ref('/code_requests').push({
 						timestamp: firebase.database.ServerValue.TIMESTAMP,
 						email: user.email,
-						key_used: REBELCHAT_KEY
+						key_used: userKey//REBELCHAT_KEY
 					});
 					newRef.then(function(data){
 						var uid = data.key;console.log(uid);
@@ -113,13 +131,37 @@ export default class FirebaseInstance {
 								var token = data.val().token;
 								block_div.parentNode.removeChild(block_div);
 								if(token == document.getElementById("rebelchat-modal-token").value){
-									localStorage.setItem("REBELCHAT_KEY",userKey);
-									localStorage.setItem("USER_NAME",userName);
 									REBELCHAT_KEY = userKey;
+									localStorage.setItem('USER_NAME',userName);
+									localStorage.setItem('REBELCHAT_KEY',userKey);
 									//push message
 									token_modal.hide();
 									that.sendClientMessage(msg);
 									//load chat
+									that.newServeMessage(data => {
+										const message = data.val();
+										//GET ONLY THE SERVER MESSAGES
+										if ( message && message['source'] == 'SERVER' ){
+											that.mainObject.checkLastDateEntry();
+							
+											//FIRE NEW MESSAGES ACTIONS
+											var now = new Date(),
+											then  = new Date(message['createdAt']),
+											diff = now - then;
+											if(diff < 10*1000){
+												that.mainObject.fireNewMessagesActions();
+											}
+
+											//BUILD MESSAGE
+											that.mainObject.buildServerMessage(
+												message['message'],
+												message['createdAt'],
+												message['read'],
+												false,
+												data.key
+											);
+										}
+									});
 									that.getMessages().then(snap => {
 										const data = snap.val();
 										if ( data ){
@@ -148,9 +190,16 @@ export default class FirebaseInstance {
 					});
 				});
 				modal.show();
-			}else{
+			}else{//The user is new
+				/* If the user is not set then: create a new entry on firebase */
+				//create new entry on firebase, the next line saves the new client key in localstorage.
+				that.pushClientKey();
+				//We also need to save the user name.
+				localStorage.setItem('USER_NAME',user.name);
 				updClient();
 				success();
+				//Listen for message events
+				that.mainObject.serverMessagesEvent();
 			}
 		});
 	}

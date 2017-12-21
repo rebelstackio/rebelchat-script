@@ -18,9 +18,10 @@
   "homepage": "https://github.com/rebelstackio/rebelchat-script#readme",
   "scripts": {
     "build": "npm run mincss && NODE_ENV=production node_modules/.bin/webpack --watch --colors",
+    "build:win": "SET NODE_ENV=production && npm run mincss && node_modules\\.bin\\webpack --watch --colors",
     "start": "NODE_ENV=development node_modules/.bin/webpack-dev-server --progress --colors",
     "start:win": "SET NODE_ENV=development & node_modules\\.bin\\webpack-dev-server --progress --colors",
-    "mincss": "NODE_ENV=development node_modules/.bin/minify --output  ./src/assets/css/style.min.css ./src/assets/css/style.css"
+    "mincss": "node_modules\\.bin\\minify --output  .\\src\\assets\\css\\style.min.css .\\src\\assets\\css\\style.css"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
